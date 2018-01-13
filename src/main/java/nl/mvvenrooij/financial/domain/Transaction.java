@@ -1,0 +1,64 @@
+package nl.mvvenrooij.financial.domain;
+
+
+import org.javamoney.moneta.Money;
+
+import java.time.LocalDate;
+import java.util.Objects;
+
+public final class Transaction {
+    private final String accountNumber;
+    private final LocalDate date;
+    private final String contraAccount;
+    private final Money amount;
+    private final String description;
+
+    public Transaction(final String accountNumber, final LocalDate date, final String contraAccount, final Money amount, final String description) {
+        this.accountNumber = accountNumber;
+        this.date = date;
+        this.contraAccount = contraAccount;
+        this.amount = amount;
+        this.description = description;
+    }
+
+    public String accountNumber() {
+        return accountNumber;
+    }
+
+    public LocalDate date() {
+        return date;
+    }
+
+    public String contraAccount() {
+        return contraAccount;
+    }
+
+    public Money amount() {
+        return amount;
+    }
+
+    public String description() {
+        return description;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Transaction that = (Transaction) o;
+        return Objects.equals(accountNumber, that.accountNumber) &&
+                Objects.equals(date, that.date) &&
+                Objects.equals(contraAccount, that.contraAccount) &&
+                Objects.equals(amount, that.amount) &&
+                Objects.equals(description, that.description);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(accountNumber, date, contraAccount, amount, description);
+    }
+}
