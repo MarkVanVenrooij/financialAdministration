@@ -11,7 +11,7 @@ public class BudgetRepositoryTest {
     @Test
     public void findNonExistingBudgetByNameAndYear() {
         BudgetRepository budgetRepository = new BudgetRepository();
-        final Optional<Budget> optionalBudget = budgetRepository.findNonExistingBudgetByNameAndYear("budgetCategory", Year.of(2017));
+        final Optional<Budget> optionalBudget = budgetRepository.findExistingBudgetByNameAndYear("budgetCategory", Year.of(2017));
         assertFalse(optionalBudget.isPresent());
     }
 
@@ -24,7 +24,7 @@ public class BudgetRepositoryTest {
 
         budgetRepository.storeBudget(budget);
 
-        final Optional<Budget> optionalBudget = budgetRepository.findNonExistingBudgetByNameAndYear(categoryName, year);
+        final Optional<Budget> optionalBudget = budgetRepository.findExistingBudgetByNameAndYear(categoryName, year);
         assertTrue(optionalBudget.isPresent());
         optionalBudget.ifPresent(b -> assertEquals(year, b.year()));
         optionalBudget.ifPresent(b -> assertEquals(categoryName, b.categoryName()));

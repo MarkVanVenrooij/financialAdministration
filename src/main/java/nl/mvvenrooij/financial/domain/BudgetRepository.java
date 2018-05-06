@@ -9,7 +9,7 @@ import java.util.Optional;
 public class BudgetRepository {
     private Map<CategoryYear, Budget> budgets = new HashMap<>();
 
-    public Optional<Budget> findNonExistingBudgetByNameAndYear(final String budgetCategory, final Year year) {
+    public Optional<Budget> findExistingBudgetByNameAndYear(final String budgetCategory, final Year year) {
         return Optional.ofNullable(budgets.get(new CategoryYear(budgetCategory, year)));
     }
 
@@ -41,7 +41,6 @@ public class BudgetRepository {
 
         @Override
         public int hashCode() {
-
             return Objects.hash(category, year);
         }
     }
