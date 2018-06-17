@@ -1,5 +1,6 @@
 package nl.mvvenrooij.financial.domain;
 
+import nl.mvvenrooij.financial.domainevents.EventBus;
 import org.javamoney.moneta.Money;
 
 import javax.money.CurrencyUnit;
@@ -26,6 +27,7 @@ public class Category {
 
     public void addTransactions(final Transaction... transactions) {
         this.transactions.addAll(Arrays.asList(transactions));
+        EventBus.publish(new CategoryUpdated(this));
     }
 
     public Money totalInInterval(final LocalDate startDate, final LocalDate endDate) {
