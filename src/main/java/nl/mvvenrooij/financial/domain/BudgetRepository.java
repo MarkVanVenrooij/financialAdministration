@@ -1,10 +1,8 @@
 package nl.mvvenrooij.financial.domain;
 
 import java.time.Year;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class BudgetRepository {
     private Map<CategoryYear, Budget> budgets = new HashMap<>();
@@ -15,6 +13,12 @@ public class BudgetRepository {
 
     public void storeBudget(final Budget budget) {
         budgets.put(new CategoryYear(budget.categoryName(), budget.year()), budget);
+    }
+
+    public Set<Budget> findExistingBudgetByName(final String categoryName) {
+        return budgets.entrySet().stream()
+                .filter((e) -> e.getKey().category.equals(categoryName)).map(Map.Entry::getValue)
+                .collect(Collectors.toSet());
     }
 
     private class CategoryYear {

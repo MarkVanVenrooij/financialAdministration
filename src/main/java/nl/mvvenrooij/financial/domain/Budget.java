@@ -9,7 +9,8 @@ import java.util.Objects;
 public class Budget {
     private final String categoryName;
     private final Year year;
-    private Money amount = Money.zero(Monetary.getCurrency("EUR"));
+    private Money amountPlanned = Money.zero(Monetary.getCurrency("EUR"));
+    private Money amountUsed = Money.zero(Monetary.getCurrency("EUR"));
 
     Budget(final String categoryName, final Year year) {
         this.categoryName = categoryName;
@@ -24,12 +25,20 @@ public class Budget {
         return year;
     }
 
-    public Money amount() {
-        return amount;
+    public Money amountPlanned() {
+        return amountPlanned;
     }
 
-    public void setAmount(final Money amount) {
-        this.amount = amount;
+    public void setAmountPlanned(final Money amountPlanned) {
+        this.amountPlanned = amountPlanned;
+    }
+
+    public Money amountUsed() {
+        return amountUsed;
+    }
+
+    public void setAmountUsed(final Money amountPlanned) {
+        this.amountUsed = amountPlanned;
     }
 
     @Override
@@ -50,4 +59,7 @@ public class Budget {
         return Objects.hash(categoryName, year);
     }
 
+    public Money remaining() {
+        return amountPlanned.subtract(amountUsed);
+    }
 }

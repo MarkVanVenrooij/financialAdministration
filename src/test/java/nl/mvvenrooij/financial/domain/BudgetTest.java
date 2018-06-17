@@ -35,8 +35,8 @@ public class BudgetTest {
         assertEquals(categoryName, budget1.categoryName());
         assertEquals(year, budget1.year());
         final Money amount = Money.of(1, EUR);
-        budget1.setAmount(amount);
+        budget1.setAmountPlanned(amount);
         assertTrue(budget1.equals(budget2));
-        assertEquals(amount, budget1.amount());
+        assertEquals(amount, budget1.amountPlanned());
     }
 }

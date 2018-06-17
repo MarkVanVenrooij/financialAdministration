@@ -1,22 +1,86 @@
 package nl.mvvenrooij.financial.domain;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.Year;
+import java.util.Iterator;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class BudgetRepositoryTest {
+class BudgetRepositoryTest {
+
+    private CategoryRepository categoryRepository;
+    private BudgetFactory budgetFactory;
+    private BudgetRepository budgetRepository;
+    private String categoryName;
+
+    @BeforeEach
+    void setup() {
+        budgetRepository = new BudgetRepository();
+        categoryRepository = new CategoryRepository();
+        categoryName = "cat";
+        categoryRepository.storeCategory(new Category(categoryName));
+        budgetFactory = new BudgetFactory(categoryRepository);
+    }
+
     @Test
-    public void findNonExistingBudgetByNameAndYear() {
+    void findNonExistingBudgetByNameAndYear() {
         BudgetRepository budgetRepository = new BudgetRepository();
         final Optional<Budget> optionalBudget = budgetRepository.findExistingBudgetByNameAndYear("budgetCategory", Year.of(2017));
         assertFalse(optionalBudget.isPresent());
     }
 
     @Test
-    public void storeAndFindBudgetByNameAndYear() {
+    void findExistingBudgetByNameAndYear() {
+        final Budget budget = budgetFactory.createBudget(categoryName, Year.of(2018));
+        budgetRepository.storeBudget(budget);
+
+        final Optional<Budget> optionalBudget = budgetRepository.findExistingBudgetByNameAndYear(categoryName, Year.of(2018));
+
+        assertTrue(optionalBudget.isPresent());
+        assertEquals(budget, optionalBudget.get());
+    }
+
+    @Test
+    void findNonExistingBudgetsByName() {
+        final Set<Budget> budgets = budgetRepository.findExistingBudgetByName(categoryName);
+
+        assertTrue(budgets.isEmpty());
+    }
+
+    @Test
+    void findExistingBudgetByName() {
+        final Budget budget = budgetFactory.createBudget(categoryName, Year.of(2018));
+        budgetRepository.storeBudget(budget);
+
+        final Set<Budget> budgets = budgetRepository.findExistingBudgetByName(categoryName);
+
+        assertFalse(budgets.isEmpty());
+        assertEquals(1, budgets.size());
+
+    }
+
+    @Test
+    void findExistingBudgetsByName() {
+        final Budget budget1 = budgetFactory.createBudget(categoryName, Year.of(2017));
+        final Budget budget2 = budgetFactory.createBudget(categoryName, Year.of(2018));
+        budgetRepository.storeBudget(budget1);
+        budgetRepository.storeBudget(budget2);
+
+        final Set<Budget> budgets = budgetRepository.findExistingBudgetByName(categoryName);
+
+        assertFalse(budgets.isEmpty());
+        assertEquals(2, budgets.size());
+        final Iterator<Budget> iterator = budgets.iterator();
+        assertEquals(budget1, iterator.next());
+        assertEquals(budget2, iterator.next());
+    }
+
+    @Test
+    void storeAndFindBudgetByNameAndYear() {
         final String categoryName = "budgetCategory";
         final Year year = Year.of(2017);
         final Budget budget = new Budget(categoryName, year);
