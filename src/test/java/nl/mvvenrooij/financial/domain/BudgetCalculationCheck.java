@@ -1,6 +1,7 @@
 package nl.mvvenrooij.financial.domain;
 
 import org.javamoney.moneta.Money;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -17,8 +18,13 @@ public class BudgetCalculationCheck {
     private CategoryRepository categoryRepository;
     private BudgetFactory budgetFactory;
     private Category category;
+    private static BudgetRepository budgetRepository;
 
-    //FIXME while running tests there are 3 eventsync listeners at some point because the thing is static
+    @BeforeAll
+    static void repoSetup() {
+        budgetRepository = new BudgetRepository();
+        new AmountUsedUpdater(budgetRepository);
+    }
 
     @BeforeEach
     void setup() {
@@ -27,6 +33,7 @@ public class BudgetCalculationCheck {
         category = new Category(categoryName);
         categoryRepository.storeCategory(category);
         budgetFactory = new BudgetFactory(categoryRepository);
+
     }
 
     @Test
@@ -38,10 +45,6 @@ public class BudgetCalculationCheck {
 
     @Test
     void zeroBudgetWithSingleTransactionHasNegativeDifference() {
-        final BudgetRepository budgetRepository = new BudgetRepository();
-        //TODO there should be some orchestration so that the eventlistener is instantiated automatically when context starts
-        new AmountUsedUpdater(budgetRepository);
-
         Budget budget = budgetFactory.createBudget(category.name(), Year.of(2018));
         budgetRepository.storeBudget(budget);
 
@@ -54,9 +57,6 @@ public class BudgetCalculationCheck {
 
     @Test
     void tenEuroBudgetWithSingleTransactionHasPositiveDifference() {
-        final BudgetRepository budgetRepository = new BudgetRepository();
-        new AmountUsedUpdater(budgetRepository);
-
         Budget budget = budgetFactory.createBudget(category.name(), Year.of(2018));
         budget.setAmountPlanned(Money.of(10, "EUR"));
         budgetRepository.storeBudget(budget);
@@ -70,9 +70,7 @@ public class BudgetCalculationCheck {
 
     @Test
     void twoBudgetsAreUpdatedWhithMultipleTransactions() {
-        final BudgetRepository budgetRepository = new BudgetRepository();
 
-        new AmountUsedUpdater(budgetRepository);
 
         Budget budget1 = budgetFactory.createBudget(category.name(), Year.of(2017));
         budget1.setAmountPlanned(Money.of(10, "EUR"));
