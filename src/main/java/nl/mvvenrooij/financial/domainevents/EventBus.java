@@ -11,7 +11,9 @@ public final class EventBus {
     }
 
     public static void registerListener(final EventListener listener) {
-        listeners.add(listener);
+        if (listeners.stream().noneMatch((l) -> l.getClass().equals(listener.getClass()))) {
+            listeners.add(listener);
+        }
     }
 
     public static void publish(final DomainEvent event) {
