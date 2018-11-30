@@ -11,10 +11,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class BudgetTest {
 
-    public static final CurrencyUnit EUR = Monetary.getCurrency("EUR");
+    static final CurrencyUnit EUR = Monetary.getCurrency("EUR");
 
     @Test
-    public void initalEntityChecks() {
+    void initalEntityChecks() {
         final String categoryName = "category";
         final Year year = Year.of(2017);
         final Budget budget1 = new Budget(categoryName, year);
@@ -38,5 +38,27 @@ public class BudgetTest {
         budget1.setAmountPlanned(amount);
         assertTrue(budget1.equals(budget2));
         assertEquals(amount, budget1.amountPlanned());
+    }
+
+    @Test
+    void amountRemainingIsZeroOnNewBudget() {
+        Budget budget = new Budget("cat", Year.of(2018));
+        assertEquals(Money.zero(EUR), budget.remaining());
+    }
+
+    @Test
+    void amountRemainingIsAmountPlannedWithoutAnySpending() {
+        Budget budget = new Budget("cat", Year.of(2018));
+        Money amount = Money.of(10, EUR);
+        budget.setAmountPlanned(amount);
+        assertEquals(amount, budget.remaining());
+    }
+
+    @Test
+    void amountRemainingIsNegativeWithOnlySpending() {
+        Budget budget = new Budget("cat", Year.of(2018));
+        Money amount = Money.of(10, EUR);
+        budget.setAmountUsed(amount);
+        assertEquals(amount.multiply(-1), budget.remaining());
     }
 }

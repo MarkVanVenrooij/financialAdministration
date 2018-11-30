@@ -21,6 +21,12 @@ public class BudgetRepository {
                 .collect(Collectors.toSet());
     }
 
+    public Set<Budget> findAllBudgetsByYear(final Year year) {
+        return budgets.entrySet().stream()
+                .filter((e) -> e.getKey().year.equals(year)).map(Map.Entry::getValue)
+                .collect(Collectors.toSet());
+    }
+
     private class CategoryYear {
         private final String category;
         private final Year year;

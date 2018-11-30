@@ -33,12 +33,12 @@ public class Budget {
         this.amountPlanned = amountPlanned;
     }
 
-    public Money amountUsed() {
-        return amountUsed;
-    }
-
     public void setAmountUsed(final Money amountPlanned) {
         this.amountUsed = amountPlanned;
+    }
+
+    public Money remaining() {
+        return amountPlanned.subtract(amountUsed);
     }
 
     @Override
@@ -59,7 +59,13 @@ public class Budget {
         return Objects.hash(categoryName, year);
     }
 
-    public Money remaining() {
-        return amountPlanned.subtract(amountUsed);
+    @Override
+    public String toString() {
+        return "Budget{" +
+                "categoryName='" + categoryName + '\'' +
+                ", year=" + year +
+                ", amountPlanned=" + amountPlanned +
+                ", amountUsed=" + amountUsed +
+                "}\n";
     }
 }
