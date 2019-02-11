@@ -33,6 +33,10 @@ public class Budget {
         this.amountPlanned = amountPlanned;
     }
 
+    public Money amountLeft() {
+        return amountPlanned.subtract( amountUsed);
+    }
+
     public void setAmountUsed(final Money amountPlanned) {
         this.amountUsed = amountPlanned;
     }
@@ -66,6 +70,7 @@ public class Budget {
                 ", year=" + year +
                 ", amountPlanned=" + amountPlanned +
                 ", amountUsed=" + amountUsed +
+                ", amountLeft=" + amountLeft() +
                 "}\n";
     }
 }

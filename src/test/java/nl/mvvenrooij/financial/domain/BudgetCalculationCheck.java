@@ -3,6 +3,7 @@ package nl.mvvenrooij.financial.domain;
 import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import javax.money.Monetary;
@@ -70,8 +71,6 @@ public class BudgetCalculationCheck {
 
     @Test
     void twoBudgetsAreUpdatedWhithMultipleTransactions() {
-
-
         Budget budget1 = budgetFactory.createBudget(category.name(), Year.of(2017));
         budget1.setAmountPlanned(Money.of(10, "EUR"));
         budgetRepository.storeBudget(budget1);
