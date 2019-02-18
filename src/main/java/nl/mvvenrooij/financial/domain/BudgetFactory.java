@@ -7,6 +7,7 @@ public class BudgetFactory {
 
     public BudgetFactory(final CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
+
     }
 
     public Budget createBudget(final String categoryName, final Year year) {
@@ -18,4 +19,15 @@ public class BudgetFactory {
 
     }
 
+
+    public Budget createBudgetForYearBasedOnOtherBudget(final String categoryName, Year budgetYear, Budget oldBudget) {
+
+        if (categoryRepository.findCategoryByName(categoryName).isPresent()) {
+            final Budget newBudget = new Budget(categoryName, budgetYear);
+            newBudget.setAmountPlanned(oldBudget.amountPlanned());
+            return newBudget;
+        } else {
+            throw new CategoryDoesNotExistException();
+        }
+    }
 }

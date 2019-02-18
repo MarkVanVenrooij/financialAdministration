@@ -3,7 +3,6 @@ package nl.mvvenrooij.financial.domain;
 import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import javax.money.Monetary;

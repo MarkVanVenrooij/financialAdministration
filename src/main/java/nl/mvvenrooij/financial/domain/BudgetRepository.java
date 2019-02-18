@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 public class BudgetRepository {
     private Map<CategoryYear, Budget> budgets = new HashMap<>();
 
+    //Todo if your finding an existing budget it should not be an optional, either rename or trow an exception if nothing is found
     public Optional<Budget> findExistingBudgetByNameAndYear(final String budgetCategory, final Year year) {
         return Optional.ofNullable(budgets.get(new CategoryYear(budgetCategory, year)));
     }
@@ -17,13 +18,15 @@ public class BudgetRepository {
 
     public Set<Budget> findExistingBudgetByName(final String categoryName) {
         return budgets.entrySet().stream()
-                .filter((e) -> e.getKey().category.equals(categoryName)).map(Map.Entry::getValue)
+                .filter((e) -> e.getKey().category.equals(categoryName))
+                .map(Map.Entry::getValue)
                 .collect(Collectors.toSet());
     }
 
     public Set<Budget> findAllBudgetsByYear(final Year year) {
         return budgets.entrySet().stream()
-                .filter((e) -> e.getKey().year.equals(year)).map(Map.Entry::getValue)
+                .filter((e) -> e.getKey().year.equals(year))
+                .map(Map.Entry::getValue)
                 .collect(Collectors.toSet());
     }
 
