@@ -35,7 +35,7 @@ public class BudgetFactoryTest {
 
     @Test
     public void createBudgetForCategoryThatNotExists() {
-        assertThrows(CategoryDoesNotExistException.class, () -> budgetFactory.createBudget(NON_EXISTING_CATEGORY, _2018));
+        assertThrows(CategoryDoesNotExist.class, () -> budgetFactory.createBudget(NON_EXISTING_CATEGORY, _2018));
     }
 
     @Test
@@ -54,6 +54,6 @@ public class BudgetFactoryTest {
 
     @Test
     public void createBudgetForYearBasedOnOtherBudgetThrowsExceptionWhenCategoryDoesntExists() {
-        assertThrows(CategoryDoesNotExistException.class, () -> budgetFactory.createBudgetForYearBasedOnOtherBudget(NON_EXISTING_CATEGORY, _2018, null));
+        assertThrows(CategoryDoesNotExist.class, () -> budgetFactory.createBudgetForYearBasedOnOtherBudget(NON_EXISTING_CATEGORY, _2018, null));
     }
 }

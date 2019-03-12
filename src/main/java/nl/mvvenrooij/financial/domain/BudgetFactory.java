@@ -14,7 +14,7 @@ public class BudgetFactory {
         if (categoryRepository.findCategoryByName(categoryName).isPresent()) {
             return new Budget(categoryName, year);
         } else {
-            throw new CategoryDoesNotExistException();
+            throw new CategoryDoesNotExist();
         }
 
     }
@@ -27,7 +27,7 @@ public class BudgetFactory {
             newBudget.setAmountPlanned(oldBudget.amountPlanned());
             return newBudget;
         } else {
-            throw new CategoryDoesNotExistException();
+            throw new CategoryDoesNotExist();
         }
     }
 }

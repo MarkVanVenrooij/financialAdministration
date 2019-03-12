@@ -50,9 +50,8 @@ public class BudgetCalculationCheck {
 
         addAndStoreTransactionInYear(Year.of(2018));
 
-        Optional<Budget> optionalBudget = budgetRepository.findExistingBudgetByNameAndYear(budget.categoryName(), budget.year());
-        assertTrue(optionalBudget.isPresent());
-        assertEquals(Money.of(-1, "EUR"), optionalBudget.get().remaining());
+        Budget budgetFound = budgetRepository.findExistingBudgetByNameAndYear(budget.categoryName(), budget.year());
+        assertEquals(Money.of(-1, "EUR"), budgetFound.remaining());
     }
 
     @Test
@@ -63,9 +62,8 @@ public class BudgetCalculationCheck {
 
         addAndStoreTransactionInYear(Year.of(2018));
 
-        Optional<Budget> optionalBudget = budgetRepository.findExistingBudgetByNameAndYear(budget.categoryName(), budget.year());
-        assertTrue(optionalBudget.isPresent());
-        assertEquals(Money.of(9, "EUR"), optionalBudget.get().remaining());
+       Budget budgetFound = budgetRepository.findExistingBudgetByNameAndYear(budget.categoryName(), budget.year());
+        assertEquals(Money.of(9, "EUR"), budgetFound.remaining());
     }
 
     @Test
@@ -82,13 +80,11 @@ public class BudgetCalculationCheck {
         addAndStoreTransactionInYear(Year.of(2018));
         addAndStoreTransactionInYear(Year.of(2018));
 
-        Optional<Budget> optionalBudget = budgetRepository.findExistingBudgetByNameAndYear(budget1.categoryName(), budget1.year());
-        assertTrue(optionalBudget.isPresent());
-        assertEquals(Money.of(9, "EUR"), optionalBudget.get().remaining());
+        Budget budgetFound1 = budgetRepository.findExistingBudgetByNameAndYear(budget1.categoryName(), budget1.year());
+        assertEquals(Money.of(9, "EUR"), budgetFound1.remaining());
 
-        Optional<Budget> optionalBudget2 = budgetRepository.findExistingBudgetByNameAndYear(budget2.categoryName(), budget2.year());
-        assertTrue(optionalBudget2.isPresent());
-        assertEquals(Money.of(18, "EUR"), optionalBudget2.get().remaining());
+        Budget budgetFound2 = budgetRepository.findExistingBudgetByNameAndYear(budget2.categoryName(), budget2.year());
+        assertEquals(Money.of(18, "EUR"), budgetFound2.remaining());
     }
 
     private void addAndStoreTransactionInYear(Year year) {

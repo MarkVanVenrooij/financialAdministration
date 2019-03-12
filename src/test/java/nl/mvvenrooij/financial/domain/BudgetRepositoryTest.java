@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Year;
 import java.util.Iterator;
-import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -29,8 +28,7 @@ class BudgetRepositoryTest {
     @Test
     void findNonExistingBudgetByNameAndYear() {
         BudgetRepository budgetRepository = new BudgetRepository();
-        final Optional<Budget> optionalBudget = budgetRepository.findExistingBudgetByNameAndYear("budgetCategory", Year.of(2017));
-        assertFalse(optionalBudget.isPresent());
+        assertThrows(BudgetDoesNotExist.class ,() -> budgetRepository.findExistingBudgetByNameAndYear("budgetCategory", Year.of(2017)));
     }
 
     @Test
@@ -38,10 +36,9 @@ class BudgetRepositoryTest {
         final Budget budget = budgetFactory.createBudget(categoryName, Year.of(2018));
         budgetRepository.storeBudget(budget);
 
-        final Optional<Budget> optionalBudget = budgetRepository.findExistingBudgetByNameAndYear(categoryName, Year.of(2018));
+        final Budget budgetFound = budgetRepository.findExistingBudgetByNameAndYear(categoryName, Year.of(2018));
 
-        assertTrue(optionalBudget.isPresent());
-        assertEquals(budget, optionalBudget.get());
+        assertEquals(budget, budgetFound);
     }
 
     @Test
@@ -138,9 +135,8 @@ class BudgetRepositoryTest {
 
         budgetRepository.storeBudget(budget);
 
-        final Optional<Budget> optionalBudget = budgetRepository.findExistingBudgetByNameAndYear(categoryName, year);
-        assertTrue(optionalBudget.isPresent());
-        optionalBudget.ifPresent(b -> assertEquals(year, b.year()));
-        optionalBudget.ifPresent(b -> assertEquals(categoryName, b.categoryName()));
+        final Budget budgetFound = budgetRepository.findExistingBudgetByNameAndYear(categoryName, year);
+        assertEquals(year, budgetFound.year());
+        assertEquals(categoryName, budgetFound.categoryName());
     }
 }
