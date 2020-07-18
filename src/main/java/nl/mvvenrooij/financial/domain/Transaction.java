@@ -9,14 +9,14 @@ import java.util.Objects;
 public final class Transaction {
     private final String accountNumber;
     private final LocalDate date;
-    private final String contraAccount;
+    private final String contraAccountNumber;
     private final Money amount;
     private final String description;
 
-    public Transaction(final String accountNumber, final LocalDate date, final String contraAccount, final Money amount, final String description) {
+    public Transaction(final String accountNumber, final LocalDate date, final String contraAccountNumber, final Money amount, final String description) {
         this.accountNumber = accountNumber;
         this.date = date;
-        this.contraAccount = contraAccount;
+        this.contraAccountNumber = contraAccountNumber;
         this.amount = amount;
         this.description = description;
     }
@@ -29,8 +29,8 @@ public final class Transaction {
         return date;
     }
 
-    public String contraAccount() {
-        return contraAccount;
+    public String contraAccountNumber() {
+        return contraAccountNumber;
     }
 
     public Money amount() {
@@ -52,13 +52,13 @@ public final class Transaction {
         Transaction that = (Transaction) o;
         return Objects.equals(accountNumber, that.accountNumber) &&
                 Objects.equals(date, that.date) &&
-                Objects.equals(contraAccount, that.contraAccount) &&
+                Objects.equals(contraAccountNumber, that.contraAccountNumber) &&
                 Objects.equals(amount, that.amount) &&
                 Objects.equals(description, that.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(accountNumber, date, contraAccount, amount, description);
+        return Objects.hash(accountNumber, date, contraAccountNumber, amount, description);
     }
 }

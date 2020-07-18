@@ -6,10 +6,7 @@ import org.javamoney.moneta.Money;
 import javax.money.CurrencyUnit;
 import javax.money.Monetary;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class Category {
     private static final CurrencyUnit EUR = Monetary.getCurrency("EUR");
@@ -38,6 +35,9 @@ public class Category {
                 .reduce(Money.zero(EUR), Money::add);
     }
 
+    public List<Transaction> transactions() {
+        return new ArrayList<>(transactions);
+    }
 
     @Override
     public boolean equals(Object o) {

@@ -13,9 +13,9 @@ public class TransactionTest {
 
     @Test
     public void initialValueObjectChecks() {
-        final String accountNumber = "accountNumber";
+        final String accountNumber = "contraAccountNumber";
         final LocalDate date = LocalDate.of(2017, 1, 1);
-        final String contraAccount = "contraAccount";
+        final String contraAccount = "contraAccountNumber";
         final Money amount = Money.of(1, Monetary.getCurrency("EUR"));
         final String description = "description";
 
@@ -40,7 +40,7 @@ public class TransactionTest {
 
         assertEquals(accountNumber, transaction1.accountNumber());
         assertEquals(date, transaction1.date());
-        assertEquals(contraAccount, transaction1.contraAccount());
+        assertEquals(contraAccount, transaction1.contraAccountNumber());
         assertEquals(amount, transaction1.amount());
         assertEquals(description, transaction1.description());
     }

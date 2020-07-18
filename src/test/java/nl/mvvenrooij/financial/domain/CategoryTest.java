@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import javax.money.CurrencyUnit;
 import javax.money.Monetary;
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,13 +20,13 @@ public class CategoryTest {
     private static final Money EURO_21 = Money.of(21, EUR);
     private static final Money EURO_33 = Money.of(33, EUR);
     private static final String DESCRIPTION = "description";
-    private static final String CONTRA_ACCOUNT = "contraAccount";
-    private static final String ACCOUNT_NUMBER = "accountNumber";
+    private static final String CONTRA_ACCOUNT = "contraAccountNumber";
+    private static final String ACCOUNT_NUMBER = "contraAccountNumber";
     private static final LocalDate JANUARI_01_2017 = LocalDate.of(2017, 1, 1);
     private static final LocalDate DECEMBER_31_2017 = LocalDate.of(2017, 12, 31);
 
     @Test
-    public void initialEntityChecks() {
+    void initialEntityChecks() {
         final String categoryName = "category";
         final Category category1 = new Category(categoryName);
         final Category category2 = new Category(categoryName);
@@ -38,14 +39,14 @@ public class CategoryTest {
     }
 
     @Test
-    public void withoutTransactionsTotalsToZero() {
+    void withoutTransactionsTotalsToZero() {
         final String categoryName = "category";
         final Category category = new Category(categoryName);
         assertEquals(Money.zero(EUR), category.totalInInterval(JANUARI_01_2017, DECEMBER_31_2017));
     }
 
     @Test
-    public void withOneTransactionsTotalsToTransactionAmount() {
+    void withOneTransactionsTotalsToTransactionAmount() {
         final String categoryName = "category";
         final Category category = new Category(categoryName);
         final LocalDate date = LocalDate.of(2017, 12, 30);
@@ -55,7 +56,7 @@ public class CategoryTest {
     }
 
     @Test
-    public void withMultipleTransactionsTotalsToTransactionAmount() {
+    void withMultipleTransactionsTotalsToTransactionAmount() {
         final String categoryName = "category";
         final Category category = new Category(categoryName);
         final LocalDate date = LocalDate.of(2017, 12, 30);
@@ -67,7 +68,7 @@ public class CategoryTest {
     }
 
     @Test
-    public void withTwoIndentocalTransactionsTotalsToTransactionAmount() {
+    void withTwoIndentocalTransactionsTotalsToTransactionAmount() {
         final String categoryName = "category";
         final Category category = new Category(categoryName);
         final LocalDate date = LocalDate.of(2017, 12, 30);
@@ -78,7 +79,7 @@ public class CategoryTest {
     }
 
     @Test
-    public void withTransactionOutsideOfIntervalTotalsToZero() {
+    void withTransactionOutsideOfIntervalTotalsToZero() {
         final String categoryName = "category";
         final Category category = new Category(categoryName);
         final Transaction transaction1 = new Transaction(ACCOUNT_NUMBER, LocalDate.of(2018, 1, 1), CONTRA_ACCOUNT, EURO_10, DESCRIPTION);
@@ -88,7 +89,7 @@ public class CategoryTest {
     }
 
     @Test
-    public void withTransactionAtEdgeOfIntervalTotalsToTransactionAmount() {
+    void withTransactionAtEdgeOfIntervalTotalsToTransactionAmount() {
         final String categoryName = "category";
         final Category category = new Category(categoryName);
         final Transaction transaction1 = new Transaction(ACCOUNT_NUMBER, JANUARI_01_2017, CONTRA_ACCOUNT, EURO_10, DESCRIPTION);
@@ -97,4 +98,15 @@ public class CategoryTest {
         assertEquals(EURO_21, category.totalInInterval(JANUARI_01_2017, DECEMBER_31_2017));
     }
 
+    @Test
+    void transactionsReturnsCopy() {
+        final String categoryName = "category";
+        final Category category = new Category(categoryName);
+        final Transaction transaction1 = new Transaction(ACCOUNT_NUMBER, JANUARI_01_2017, CONTRA_ACCOUNT, EURO_10, DESCRIPTION);
+        final Transaction transaction2 = new Transaction(ACCOUNT_NUMBER, DECEMBER_31_2017, CONTRA_ACCOUNT, EURO_11, DESCRIPTION);
+        category.addTransactions(transaction1);
+        List<Transaction> transactions = category.transactions();
+        transactions.set(0,transaction2);
+        assertEquals(EURO_10, category.totalInInterval(JANUARI_01_2017, DECEMBER_31_2017));
+    }
 }
