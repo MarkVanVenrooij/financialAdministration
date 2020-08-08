@@ -5,10 +5,10 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import javax.money.CurrencyUnit;
 import javax.money.Monetary;
 import java.time.LocalDate;
 import java.time.Year;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -19,6 +19,7 @@ public class BudgetCalculationCheck {
     private BudgetFactory budgetFactory;
     private Category category;
     private static BudgetRepository budgetRepository;
+    private static final CurrencyUnit EUR = Monetary.getCurrency("EUR");
 
     @BeforeAll
     static void repoSetup() {
@@ -38,14 +39,14 @@ public class BudgetCalculationCheck {
 
     @Test
     void zeroBudgetWithZeroTransactionsNoDifference() {
-        Budget budget = budgetFactory.createBudget(category.name(), Year.of(2018));
+        Budget budget = budgetFactory.createBudget(category.name(), Year.of(2018), Money.zero(EUR));
 
         assertEquals(Money.zero(Monetary.getCurrency("EUR")), budget.remaining());
     }
 
     @Test
     void zeroBudgetWithSingleTransactionHasNegativeDifference() {
-        Budget budget = budgetFactory.createBudget(category.name(), Year.of(2018));
+        Budget budget = budgetFactory.createBudget(category.name(), Year.of(2018), Money.zero(EUR));
         budgetRepository.storeBudget(budget);
 
         addAndStoreTransactionInYear(Year.of(2018));
@@ -56,8 +57,7 @@ public class BudgetCalculationCheck {
 
     @Test
     void tenEuroBudgetWithSingleTransactionHasPositiveDifference() {
-        Budget budget = budgetFactory.createBudget(category.name(), Year.of(2018));
-        budget.setAmountPlanned(Money.of(10, "EUR"));
+        Budget budget = budgetFactory.createBudget(category.name(), Year.of(2018), Money.of(10, EUR));
         budgetRepository.storeBudget(budget);
 
         addAndStoreTransactionInYear(Year.of(2018));
@@ -68,12 +68,10 @@ public class BudgetCalculationCheck {
 
     @Test
     void twoBudgetsAreUpdatedWhithMultipleTransactions() {
-        Budget budget1 = budgetFactory.createBudget(category.name(), Year.of(2017));
-        budget1.setAmountPlanned(Money.of(10, "EUR"));
+        Budget budget1 = budgetFactory.createBudget(category.name(), Year.of(2017), Money.of(10, EUR));
         budgetRepository.storeBudget(budget1);
 
-        Budget budget2 = budgetFactory.createBudget(category.name(), Year.of(2018));
-        budget2.setAmountPlanned(Money.of(20, "EUR"));
+        Budget budget2 = budgetFactory.createBudget(category.name(), Year.of(2018), Money.of(20, EUR));
         budgetRepository.storeBudget(budget2);
 
         addAndStoreTransactionInYear(Year.of(2017));

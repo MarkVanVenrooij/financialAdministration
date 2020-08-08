@@ -10,7 +10,7 @@ import java.time.Year;
 import java.util.Set;
 
 //TODO there should be some orchestration so that the eventlistener is instantiated automatically when context starts
-public class AmountUsedUpdater implements EventListener {
+public class AmountUsedUpdater implements EventListener<Category> {
     private final BudgetRepository budgetRepository;
 
     public AmountUsedUpdater(final BudgetRepository budgetRepository) {
@@ -19,7 +19,7 @@ public class AmountUsedUpdater implements EventListener {
     }
 
     @Override
-    public void handleEvent(final DomainEvent event) {
+    public void handleEvent(final DomainEvent<Category> event) {
         if (event instanceof CategoryUpdated) {
             CategoryUpdated categoryUpdated = (CategoryUpdated) event;
             final Category category = categoryUpdated.value();
@@ -31,7 +31,7 @@ public class AmountUsedUpdater implements EventListener {
     private void updateAndStoreBudget(final Category category, final Budget budget) {
         final Money amountUsed = category.totalInInterval(calculateFirstDayOfYear(budget.year()),
                 calculateLastDayOfYear(budget.year()));
-        budget.setAmountUsed(amountUsed);
+        budget.updateAmountUsed(amountUsed);
         budgetRepository.storeBudget(budget);
     }
 

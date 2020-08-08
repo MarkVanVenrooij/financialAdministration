@@ -30,18 +30,17 @@ public class BudgetFactoryTest {
 
     @Test
     public void createBudget() {
-        assertNotNull(budgetFactory.createBudget(EXISTING_CATEGORY, _2018));
+        assertNotNull(budgetFactory.createBudget(EXISTING_CATEGORY, _2018, EUR_20));
     }
 
     @Test
     public void createBudgetForCategoryThatNotExists() {
-        assertThrows(CategoryDoesNotExist.class, () -> budgetFactory.createBudget(NON_EXISTING_CATEGORY, _2018));
+        assertThrows(CategoryDoesNotExist.class, () -> budgetFactory.createBudget(NON_EXISTING_CATEGORY, _2018, EUR_20));
     }
 
     @Test
     public void createBudgetForYearBasedOnOtherBudget() {
-        final Budget oldBudget = budgetFactory.createBudget(EXISTING_CATEGORY, _2017);
-        oldBudget.setAmountPlanned(EUR_20);
+        final Budget oldBudget = budgetFactory.createBudget(EXISTING_CATEGORY, _2017, EUR_20);
         budgetRepository.storeBudget(oldBudget);
 
         final Budget budget = budgetFactory.createBudgetForYearBasedOnOtherBudget(EXISTING_CATEGORY, _2018, oldBudget);

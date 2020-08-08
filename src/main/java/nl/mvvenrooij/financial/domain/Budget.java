@@ -9,12 +9,13 @@ import java.util.Objects;
 public class Budget {
     private final String categoryName;
     private final Year year;
-    private Money amountPlanned = Money.zero(Monetary.getCurrency("EUR"));
+    private Money amountPlanned;
     private Money amountUsed = Money.zero(Monetary.getCurrency("EUR"));
 
-    Budget(final String categoryName, final Year year) {
+    Budget(final String categoryName, final Year year, final Money amountPlanned) {
         this.categoryName = categoryName;
         this.year = year;
+        this.amountPlanned = amountPlanned;
     }
 
     public String categoryName() {
@@ -29,16 +30,12 @@ public class Budget {
         return amountPlanned;
     }
 
-    public void setAmountPlanned(final Money amountPlanned) {
-        this.amountPlanned = amountPlanned;
-    }
-
     public Money amountLeft() {
         return amountPlanned.subtract( amountUsed);
     }
 
-    public void setAmountUsed(final Money amountPlanned) {
-        this.amountUsed = amountPlanned;
+    public void updateAmountUsed(final Money amountUsed) {
+        this.amountUsed = amountUsed;
     }
 
     public Money remaining() {
