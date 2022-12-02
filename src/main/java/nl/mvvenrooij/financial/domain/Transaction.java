@@ -61,4 +61,15 @@ public final class Transaction {
     public int hashCode() {
         return Objects.hash(accountNumber, date, contraAccountNumber, amount, description);
     }
+
+    @Override
+    public String toString() {
+        return "Transaction{" +
+                "accountNumber='" + accountNumber + '\'' +
+                ", date=" + date +
+                ", contraAccountNumber='" + contraAccountNumber + '\'' +
+                ", amount=" + amount +
+                ", description='" + description + '\'' +
+                '}';
+    }
 }

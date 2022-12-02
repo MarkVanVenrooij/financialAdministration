@@ -18,6 +18,12 @@ public class AdministrationOverview {
         new AmountUsedUpdater(budgetRepository);
         createCategories();
         createBudgets2022();
+
+        importTransactions();
+    }
+
+    private void importTransactions() {
+
     }
 
     private void createCategories() {
