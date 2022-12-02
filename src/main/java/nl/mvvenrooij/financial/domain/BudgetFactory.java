@@ -21,7 +21,6 @@ public class BudgetFactory {
 
     }
 
-
     public Budget createBudgetForYearBasedOnOtherBudget(final String categoryName, Year budgetYear, Budget oldBudget) {
 
         if (categoryRepository.findCategoryByName(categoryName).isPresent()) {

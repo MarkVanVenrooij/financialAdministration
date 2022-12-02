@@ -1,9 +1,6 @@
 package nl.mvvenrooij.financial.presentation;
 
-import nl.mvvenrooij.financial.domain.AmountUsedUpdater;
-import nl.mvvenrooij.financial.domain.BudgetFactory;
-import nl.mvvenrooij.financial.domain.BudgetRepository;
-import nl.mvvenrooij.financial.domain.CategoryRepository;
+import nl.mvvenrooij.financial.domain.*;
 import org.javamoney.moneta.Money;
 
 import javax.money.CurrencyUnit;
@@ -19,11 +16,17 @@ public class AdministrationOverview {
     public AdministrationOverview() {
 
         new AmountUsedUpdater(budgetRepository);
-
-        createBudgets2020();
+        createCategories2022();
+        createBudgets2022();
     }
 
-    private void createBudgets2020() {
+    private void createCategories2022() {
+        categoryRepository.storeCategory(new Category("Salary"));
+        categoryRepository.storeCategory(new Category("Rent"));
+        categoryRepository.storeCategory(new Category("Groceries"));
+    }
+
+    private void createBudgets2022() {
         budgetFactory.createBudget("Salary", Year.of(2020), Money.of(1000, EUR));
         budgetFactory.createBudget("Rent", Year.of(2020), Money.of(500, EUR));
         budgetFactory.createBudget("Groceries", Year.of(2020), Money.of(300, EUR));
