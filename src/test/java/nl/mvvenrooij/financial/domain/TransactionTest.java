@@ -28,15 +28,15 @@ public class TransactionTest {
         Transaction transaction6 = new Transaction(accountNumber, date, contraAccount, Money.of(2, Monetary.getCurrency("EUR")), description);
         Transaction transaction7 = new Transaction(accountNumber, date, contraAccount, amount, "anotherDescription");
 
-        assertTrue(transaction1.equals(transaction2));
-        assertTrue(transaction2.equals(transaction1));
+        assertEquals(transaction1, transaction2);
+        assertEquals(transaction2, transaction1);
 
-        assertFalse(transaction1.equals(null));
-        assertFalse(transaction1.equals(transaction3));
-        assertFalse(transaction1.equals(transaction4));
-        assertFalse(transaction1.equals(transaction5));
-        assertFalse(transaction1.equals(transaction6));
-        assertFalse(transaction1.equals(transaction7));
+        assertNotEquals(null, transaction1);
+        assertNotEquals(transaction1, transaction3);
+        assertNotEquals(transaction1, transaction4);
+        assertNotEquals(transaction1, transaction5);
+        assertNotEquals(transaction1, transaction6);
+        assertNotEquals(transaction1, transaction7);
 
         assertEquals(accountNumber, transaction1.accountNumber());
         assertEquals(date, transaction1.date());

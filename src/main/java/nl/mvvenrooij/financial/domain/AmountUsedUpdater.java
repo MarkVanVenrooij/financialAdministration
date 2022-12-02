@@ -8,7 +8,7 @@ import java.time.Month;
 import java.time.Year;
 import java.util.Set;
 
-//TODO there should be some orchestration so that the eventlistener is instantiated automatically when context starts
+//TODO there should be some orchestration so that the event listener is instantiated automatically when context starts
 public class AmountUsedUpdater implements EventListener<CategoryUpdated> {
     private final BudgetRepository budgetRepository;
 

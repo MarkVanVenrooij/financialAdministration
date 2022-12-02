@@ -12,7 +12,7 @@ public class Category {
     private static final CurrencyUnit EUR = Monetary.getCurrency("EUR");
     private final String name;
 
-    private List<Transaction> transactions = new ArrayList<>();
+    private final List<Transaction> transactions = new ArrayList<>();
 
     public Category(final String name) {
         this.name = name;
@@ -24,7 +24,7 @@ public class Category {
 
     public void addTransactions(final Transaction... transactions) {
         this.transactions.addAll(Arrays.asList(transactions));
-        EventBus.publish(new CategoryUpdated(this));
+        EventBus.getInstance().publish(new CategoryUpdated(this));
     }
 
     public Money totalInInterval(final LocalDate startDate, final LocalDate endDate) {

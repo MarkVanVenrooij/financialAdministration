@@ -2,7 +2,7 @@ package nl.mvvenrooij.financial.domainevents;
 
 public interface EventListener<T extends DomainEvent<?>> {
     default void registerListener() {
-        EventBus.registerListener(this);
+        EventBus.getInstance().registerListener((EventListener<DomainEvent<?>>) this);
     }
 
     void  handleEvent(final T event);

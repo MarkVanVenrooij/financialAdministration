@@ -9,7 +9,7 @@ import java.util.Objects;
 public class Budget {
     private final String categoryName;
     private final Year year;
-    private Money amountPlanned;
+    private final Money amountPlanned;
     private Money amountUsed = Money.zero(Monetary.getCurrency("EUR"));
 
     Budget(final String categoryName, final Year year, final Money amountPlanned) {

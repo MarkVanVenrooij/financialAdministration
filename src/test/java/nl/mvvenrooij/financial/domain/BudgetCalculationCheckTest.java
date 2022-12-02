@@ -11,9 +11,8 @@ import java.time.LocalDate;
 import java.time.Year;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class BudgetCalculationCheck {
+public class BudgetCalculationCheckTest {
 
     private CategoryRepository categoryRepository;
     private BudgetFactory budgetFactory;
@@ -62,7 +61,7 @@ public class BudgetCalculationCheck {
 
         addAndStoreTransactionInYear(Year.of(2018));
 
-       Budget budgetFound = budgetRepository.findExistingBudgetByNameAndYear(budget.categoryName(), budget.year());
+        Budget budgetFound = budgetRepository.findExistingBudgetByNameAndYear(budget.categoryName(), budget.year());
         assertEquals(Money.of(9, "EUR"), budgetFound.remaining());
     }
 

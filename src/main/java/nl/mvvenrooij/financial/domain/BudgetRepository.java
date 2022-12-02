@@ -5,7 +5,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class BudgetRepository {
-    private Map<CategoryYear, Budget> budgets = new HashMap<>();
+    private final Map<CategoryYear, Budget> budgets = new HashMap<>();
 
     public Budget findExistingBudgetByNameAndYear(final String budgetCategory, final Year year) {
         Budget budget = budgets.get(new CategoryYear(budgetCategory, year));
@@ -33,7 +33,7 @@ public class BudgetRepository {
                 .collect(Collectors.toSet());
     }
 
-    private class CategoryYear {
+    private static class CategoryYear {
         private final String category;
         private final Year year;
 

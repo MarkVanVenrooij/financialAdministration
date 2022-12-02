@@ -31,10 +31,10 @@ public class CategoryTest {
         final Category category1 = new Category(categoryName);
         final Category category2 = new Category(categoryName);
         final Category category3 = new Category("anotherName");
-        assertTrue(category1.equals(category2));
-        assertTrue(category2.equals(category1));
-        assertFalse(category1.equals(null));
-        assertFalse(category1.equals(category3));
+        assertEquals(category1, category2);
+        assertEquals(category2, category1);
+        assertNotEquals(null, category1);
+        assertNotEquals(category1, category3);
         assertEquals(categoryName, category1.name());
     }
 
