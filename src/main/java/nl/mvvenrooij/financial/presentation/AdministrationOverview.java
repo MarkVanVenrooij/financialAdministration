@@ -16,20 +16,20 @@ public class AdministrationOverview {
     public AdministrationOverview() {
 
         new AmountUsedUpdater(budgetRepository);
-        createCategories2022();
+        createCategories();
         createBudgets2022();
     }
 
-    private void createCategories2022() {
+    private void createCategories() {
         categoryRepository.storeCategory(new Category("Salary"));
         categoryRepository.storeCategory(new Category("Rent"));
         categoryRepository.storeCategory(new Category("Groceries"));
     }
 
     private void createBudgets2022() {
-        budgetFactory.createBudget("Salary", Year.of(2020), Money.of(1000, EUR));
-        budgetFactory.createBudget("Rent", Year.of(2020), Money.of(500, EUR));
-        budgetFactory.createBudget("Groceries", Year.of(2020), Money.of(300, EUR));
+        budgetFactory.createBudget("Salary", Year.of(2022), Money.of(1000, EUR));
+        budgetFactory.createBudget("Rent", Year.of(2022), Money.of(500, EUR));
+        budgetFactory.createBudget("Groceries", Year.of(2022), Money.of(300, EUR));
     }
 
     public static void main(final String... args) {
