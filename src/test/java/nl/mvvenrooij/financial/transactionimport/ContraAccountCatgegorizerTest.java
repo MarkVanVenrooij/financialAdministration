@@ -15,14 +15,14 @@ public class ContraAccountCatgegorizerTest {
 
     @Test
     public void transactionWithMatchingContraAccount_isAddedToCategory() {
-        final Categorizer contraAccountCatgegorizer = new ContraAccountCatgegorizer(category, "contraAccount");
+        final CategoryRule contraAccountCatgegorizer = new ContraAccountCatgegoryRule(category, "contraAccount");
         contraAccountCatgegorizer.categorize(transaction);
         assertThat(category.transactions(), hasItems(transaction));
     }
 
     @Test
     public void transactionWithoutMatchingContraAccount_isNotAddedToCategory() {
-        final Categorizer contraAccountCatgegorizer = new ContraAccountCatgegorizer(category, "contraAccount2");
+        final CategoryRule contraAccountCatgegorizer = new ContraAccountCatgegoryRule(category, "contraAccount2");
         contraAccountCatgegorizer.categorize(transaction);
         assertThat(category.transactions(), not(hasItems(transaction)));
     }

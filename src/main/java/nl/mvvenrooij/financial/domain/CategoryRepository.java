@@ -5,9 +5,7 @@ import org.javamoney.moneta.Money;
 import javax.money.Monetary;
 import java.time.LocalDate;
 import java.time.Year;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public class CategoryRepository {
     private final Map<String, Category> categories = new HashMap<>();
@@ -25,5 +23,9 @@ public class CategoryRepository {
         return categories.values().stream()
                 .map((category -> category.totalInInterval(LocalDate.of(year.getValue(),1,1), LocalDate.of(year.getValue(),12,31))))
                 .reduce(result, Money::add);
+    }
+
+    public Collection<Category> categories() {
+        return categories.values();
     }
 }
