@@ -1,9 +1,8 @@
 package nl.mvvenrooij.financial.presentation;
 
 import nl.mvvenrooij.financial.domain.*;
-import nl.mvvenrooij.financial.transactionimport.CategorizationRules;
-import nl.mvvenrooij.financial.transactionimport.ContraAccountCatgegoryRule;
-import nl.mvvenrooij.financial.transactionimport.RaboTransactionImport;
+import nl.mvvenrooij.financial.categorization.CategorizationRules;
+import nl.mvvenrooij.financial.categorization.ContraAccountCatgegoryRule;
 import org.javamoney.moneta.Money;
 
 import javax.money.CurrencyUnit;
@@ -23,15 +22,17 @@ public class AdministrationOverview {
     private static final CurrencyUnit EUR = Monetary.getCurrency("EUR");
     private final Category uncategorized = new Category("UNCATEGORIZED");
     private final Category salary = new Category("Salary");
+    private final Category rent = new Category("Rent");
+    private final Category energy = new Category("Energy");
+    private final Category taxes = new Category("Taxes");
 
     public AdministrationOverview() {
-
         new AmountUsedUpdater(budgetRepository);
         createCategories();
         createBudgets2022();
         CategorizationRules categorizationRules = createCategorizationRules();
 
-        List<Transaction> transactionsList = importTransactions();
+        final List<Transaction> transactionsList = importTransactions();
 
         categorizationRules.apply(transactionsList);
 
@@ -59,6 +60,9 @@ public class AdministrationOverview {
     private CategorizationRules createCategorizationRules() {
         CategorizationRules categorizationRules = new CategorizationRules(uncategorized);
         categorizationRules.add(new ContraAccountCatgegoryRule(salary, "NL98INGB0003856625"));
+        categorizationRules.add(new ContraAccountCatgegoryRule(taxes, "NL98INGB0003856626"));
+        categorizationRules.add(new ContraAccountCatgegoryRule(rent, "NL98INGB0003856627"));
+        categorizationRules.add(new ContraAccountCatgegoryRule(energy, "NL98INGB0003856628"));
         return categorizationRules;
     }
 
@@ -76,9 +80,9 @@ public class AdministrationOverview {
 
     private void createCategories() {
         categoryRepository.storeCategory(salary);
-        categoryRepository.storeCategory(new Category("Rent"));
-        categoryRepository.storeCategory(new Category("Energy"));
-        categoryRepository.storeCategory(new Category("Taxes"));
+        categoryRepository.storeCategory(rent);
+        categoryRepository.storeCategory(energy);
+        categoryRepository.storeCategory(taxes);
         categoryRepository.storeCategory(new Category("Groceries"));
         categoryRepository.storeCategory(new Category("Coffee to go"));
         categoryRepository.storeCategory(uncategorized);

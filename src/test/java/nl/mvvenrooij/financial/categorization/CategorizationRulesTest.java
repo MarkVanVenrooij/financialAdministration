@@ -1,4 +1,4 @@
-package nl.mvvenrooij.financial.transactionimport;
+package nl.mvvenrooij.financial.categorization;
 
 import nl.mvvenrooij.financial.domain.Category;
 import nl.mvvenrooij.financial.domain.Transaction;

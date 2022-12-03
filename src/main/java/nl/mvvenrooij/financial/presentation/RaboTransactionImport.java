@@ -1,4 +1,4 @@
-package nl.mvvenrooij.financial.transactionimport;
+package nl.mvvenrooij.financial.presentation;
 
 import nl.mvvenrooij.financial.domain.Transaction;
 import org.apache.commons.csv.CSVFormat;
