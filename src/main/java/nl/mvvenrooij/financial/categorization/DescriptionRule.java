@@ -13,7 +13,7 @@ public class DescriptionRule implements CategoryRule {
     }
 
     @Override
-    public boolean categorize(Transaction transaction) {
+    public boolean categorize(final Transaction transaction) {
         if (transaction.description().contains(descriptionToMatch)) {
             category.addTransactions(transaction);
             return true;
