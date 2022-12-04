@@ -1,18 +1,10 @@
 package nl.mvvenrooij.financial.categorization;
 
 import nl.mvvenrooij.financial.domain.Category;
-import nl.mvvenrooij.financial.domain.Transaction;
 
-public class UncategorizedRule implements CategoryRule {
-    private final Category uncategorizedCategory;
+public class UncategorizedRule extends BaseRule {
 
     public UncategorizedRule(final Category uncategorizedCategory) {
-        this.uncategorizedCategory = uncategorizedCategory;
-    }
-
-    @Override
-    public boolean categorize(final Transaction transaction) {
-        uncategorizedCategory.addTransactions(transaction);
-        return true;
+        super(uncategorizedCategory, (transaction -> true));
     }
 }

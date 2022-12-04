@@ -1,23 +1,10 @@
 package nl.mvvenrooij.financial.categorization;
 
 import nl.mvvenrooij.financial.domain.Category;
-import nl.mvvenrooij.financial.domain.Transaction;
 
-public class DescriptionRule implements CategoryRule {
-    private final Category category;
-    private final String descriptionToMatch;
+public class DescriptionRule extends BaseRule {
 
     public DescriptionRule(final Category category, final String descriptionToMatch) {
-        this.category = category;
-        this.descriptionToMatch = descriptionToMatch;
-    }
-
-    @Override
-    public boolean categorize(final Transaction transaction) {
-        if (transaction.description().contains(descriptionToMatch)) {
-            category.addTransactions(transaction);
-            return true;
-        }
-        return false;
+        super(category, (transaction) -> transaction.description().contains(descriptionToMatch));
     }
 }
