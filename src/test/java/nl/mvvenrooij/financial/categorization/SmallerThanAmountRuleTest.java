@@ -22,7 +22,7 @@ public class SmallerThanAmountRuleTest {
     public void transactionWithSmallerThan0Amount_shouldBeAddedToCategory() {
         final Transaction toCategorize = new Transaction(null, null, null, null, Money.of(-1, EUR), null);
         final Category category = new Category("someCategory");
-        final Money zero = Money.zero(EUR);
+        final Money zero = Money.of(10, EUR);
         SmallerThanAmountRule largerThanAmountRule = new SmallerThanAmountRule(category, zero);
         assertTrue(largerThanAmountRule.categorize(toCategorize));
         assertThat(category.transactions(), hasItems(toCategorize));
