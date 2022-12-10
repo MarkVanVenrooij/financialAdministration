@@ -64,11 +64,17 @@ public final class Transaction {
 
     @Override
     public String toString() {
+        MonetaryAmountFormat customFormat = MonetaryFormats.getAmountFormat(AmountFormatQueryBuilder
+                .of(Locale.GERMAN)
+                .set(CurrencyStyle.SYMBOL)
+                .set("pattern", "0.00")
+                .build());
+        final String amountFormatted = customFormat.format(amount);
         return "Transaction{" +
                 "accountNumber='" + accountNumber + '\'' +
                 ", date=" + date +
                 ", contraAccountNumber='" + contraAccountNumber + '\'' +
-                ", amount=" + amount +
+                ", amount=" + amountFormatted +
                 ", description='" + description + '\'' +
                 '}';
     }

@@ -1,18 +1,23 @@
 package nl.mvvenrooij.financial.presentation;
 
-import nl.mvvenrooij.financial.domain.*;
 import nl.mvvenrooij.financial.categorization.CategorizationRules;
 import nl.mvvenrooij.financial.categorization.ContraAccountCatgegoryRule;
+import nl.mvvenrooij.financial.domain.*;
 import org.javamoney.moneta.Money;
+import org.javamoney.moneta.format.CurrencyStyle;
 
 import javax.money.CurrencyUnit;
 import javax.money.Monetary;
+import javax.money.format.AmountFormatQueryBuilder;
+import javax.money.format.MonetaryAmountFormat;
+import javax.money.format.MonetaryFormats;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.time.LocalDate;
 import java.time.Year;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 public class AdministrationOverview {
@@ -44,15 +49,22 @@ public class AdministrationOverview {
         for (Category cat : categoryRepository.categories()) {
             System.out.print(cat.name());
             System.out.print(" amount ");
-            System.out.println(cat.totalInInterval(LocalDate.of(2022,1,1),LocalDate.of(2022,12,31)));
-        }
+            MonetaryAmountFormat customFormat = MonetaryFormats.getAmountFormat(AmountFormatQueryBuilder
+                    .of(Locale.GERMAN)
+                    .set(CurrencyStyle.SYMBOL)
+                    .set("pattern", "0.00")
+                    .build());
 
+            Money yearlyAmount = cat.totalInInterval(LocalDate.of(2022, 1, 1), LocalDate.of(2022, 12, 31));
+            final String amountFormatted = customFormat.format(yearlyAmount);
+            System.out.println(amountFormatted);
+        }
     }
     private void printUncatgegorizedItems() {
         System.out.println();
         System.out.println("###########  UNCATEGORIZED");
         System.out.println();
-        for (Transaction t: uncategorized.transactions()) {
+        for (Transaction t : uncategorized.transactions().stream().filter(t -> t.date().isAfter(LocalDate.of(2021, 12, 31))).toList()) {
             System.out.println(t);
         }
     }
