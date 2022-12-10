@@ -6,6 +6,6 @@ import org.javamoney.moneta.Money;
 public class SmallerThanAmountRule extends BaseRule {
 
     public SmallerThanAmountRule(final Category category, final Money amountToCompareTo) {
-        super(category, (transaction -> amountToCompareTo.isGreaterThan(transaction.amount())));
+        super(category, (transaction -> amountToCompareTo.isGreaterThan(transaction.amount().abs())));
     }
 }

@@ -15,8 +15,8 @@ public class CategorizationRules {
         uncategorizedRule = new UncategorizedRule(uncategorizedCategory);
     }
 
-    public void add(final ContraAccountCatgegoryRule contraAccountCatgegoryRule) {
-        categorizationRules.add(contraAccountCatgegoryRule);
+    public void add(final CategoryRule categoryRule) {
+        categorizationRules.add(categoryRule);
     }
 
     public void apply(final List<Transaction> transactions) {

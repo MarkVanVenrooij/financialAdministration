@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class DescriptionRuleTest {
     @Test
     public void transactionWithExactMatchingDescription_shouldBeMatchedWithCategory() {
-        Transaction toCategorize = new Transaction(null,null,null, null, "description");
+        Transaction toCategorize = new Transaction(null, null, null, null, null, "description");
         Category category = new Category("someCategory");
 
         DescriptionRule descriptionRule = new DescriptionRule(category, "description");
@@ -23,7 +23,7 @@ public class DescriptionRuleTest {
 
     @Test
     public void transactionWithDifferentDescription_shouldNotBeMatchedWithCategory() {
-        Transaction toCategorize = new Transaction(null,null,null, null, "nothing related");
+        Transaction toCategorize = new Transaction(null, null, null, null, null, "nothing related");
         Category category = new Category("someCategory");
 
         DescriptionRule descriptionRule = new DescriptionRule(category, "description");
@@ -33,7 +33,7 @@ public class DescriptionRuleTest {
 
     @Test
     public void transactionWithPartialyMatchedDescrition_shouldBeMatchedWithCategory() {
-        Transaction toCategorize = new Transaction(null,null,null, null, "some description of something");
+        Transaction toCategorize = new Transaction(null, null, null, null, null, "some description of something");
         Category category = new Category("someCategory");
 
         DescriptionRule descriptionRule = new DescriptionRule(category, "description");

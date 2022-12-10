@@ -32,10 +32,11 @@ public class RaboTransactionImport {
                             record.get("IBAN/BBAN"),
                             LocalDate.parse(record.get("Rentedatum")),
                             record.get("Tegenrekening IBAN/BBAN"),
-                            Money.of(Double.parseDouble(record.get("Bedrag").replace(',','.')), Monetary.getCurrency("EUR")),
+                            record.get("Naam tegenpartij"),
+                            Money.of(Double.parseDouble(record.get("Bedrag").replace(',', '.')), Monetary.getCurrency("EUR")),
                             record.get("Omschrijving-1")
-                                    +" " + record.get("Omschrijving-2")
-                                    +" " + record.get("Omschrijving-3")
+                                    + " " + record.get("Omschrijving-2")
+                                    + " " + record.get("Omschrijving-3")
                     )
             );
         }

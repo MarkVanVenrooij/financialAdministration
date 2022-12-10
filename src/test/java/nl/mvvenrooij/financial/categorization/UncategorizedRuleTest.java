@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class UncategorizedRuleTest {
     @Test
     public void allTransactionsAreAddedToCategory() {
-        final Transaction toCategorize = new Transaction(null, null, null, null, null);
+        final Transaction toCategorize = new Transaction(null, null, null, null, null, null);
         final Category category = new Category("someCategory");
         final UncategorizedRule uncategorizedRule = new UncategorizedRule(category);
         assertTrue(uncategorizedRule.categorize(toCategorize));

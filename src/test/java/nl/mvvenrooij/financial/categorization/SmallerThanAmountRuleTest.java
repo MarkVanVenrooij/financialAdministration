@@ -20,7 +20,7 @@ public class SmallerThanAmountRuleTest {
 
     @Test
     public void transactionWithSmallerThan0Amount_shouldBeAddedToCategory() {
-        final Transaction toCategorize = new Transaction(null, null, null, Money.of(-1, EUR), null);
+        final Transaction toCategorize = new Transaction(null, null, null, null, Money.of(-1, EUR), null);
         final Category category = new Category("someCategory");
         final Money zero = Money.zero(EUR);
         SmallerThanAmountRule largerThanAmountRule = new SmallerThanAmountRule(category, zero);
@@ -30,7 +30,7 @@ public class SmallerThanAmountRuleTest {
 
     @Test
     public void transactionWithLargerThan0Amount_shouldNotBeAddedToCategory() {
-        final Transaction toCategorize = new Transaction(null, null, null, Money.of(1, EUR), null);
+        final Transaction toCategorize = new Transaction(null, null, null, null, Money.of(1, EUR), null);
         final Category category = new Category("someCategory");
         final Money zero = Money.zero(EUR);
         SmallerThanAmountRule largerThanAmountRule = new SmallerThanAmountRule(category, zero);

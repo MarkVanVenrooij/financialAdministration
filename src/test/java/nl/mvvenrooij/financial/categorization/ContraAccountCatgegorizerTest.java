@@ -10,7 +10,7 @@ import static org.hamcrest.Matchers.not;
 
 public class ContraAccountCatgegorizerTest {
 
-    private final Transaction transaction =  new Transaction("account", null, "contraAccount", null, null);
+    private final Transaction transaction = new Transaction("account", null, "contraAccount", null, null, null);
     private final Category category = new Category("SomeCat");
 
     @Test

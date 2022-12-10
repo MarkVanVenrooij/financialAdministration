@@ -11,7 +11,8 @@ import javax.money.Monetary;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.not;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class LargerThanAmountRuleTest {
 
@@ -19,7 +20,7 @@ public class LargerThanAmountRuleTest {
 
     @Test
     public void transactionWithLargerThan0Amount_shouldBeAddedToCategory() {
-        final Transaction toCategorize = new Transaction(null, null, null, Money.of(1, EUR), null);
+        final Transaction toCategorize = new Transaction(null, null, null, null, Money.of(1, EUR), null);
         final Category category = new Category("someCategory");
         final Money zero = Money.zero(EUR);
         LargerThanAmountRule largerThanAmountRule = new LargerThanAmountRule(category, zero);
@@ -29,7 +30,7 @@ public class LargerThanAmountRuleTest {
 
     @Test
     public void transactionWithSmallerThan0Amount_shouldNotBeAddedToCategory() {
-        final Transaction toCategorize = new Transaction(null, null, null, Money.of(-1, EUR), null);
+        final Transaction toCategorize = new Transaction(null, null, null, null, Money.of(-1, EUR), null);
         final Category category = new Category("someCategory");
         final Money zero = Money.zero(EUR);
         LargerThanAmountRule largerThanAmountRule = new LargerThanAmountRule(category, zero);

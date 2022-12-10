@@ -16,7 +16,7 @@ import java.util.Objects;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItems;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 public class RaboTransactionImportTest {
@@ -31,8 +31,8 @@ public class RaboTransactionImportTest {
         RaboTransactionImport transactionImport = new RaboTransactionImport(in);
         List<Transaction> result = transactionImport.transactions();
         assertEquals(2, result.size());
-        Transaction transaction1 = new Transaction("NL18RABO0123459876", LocalDate.of(2022, Month.JANUARY, 2), "NL98INGB0003856625", Money.of(221.49, EUR), "description description 2 description 3");
-        Transaction transaction2 = new Transaction("NL18RABO0123459876", LocalDate.of(2022, Month.JANUARY, 2), "NL98ABNA0416961347", Money.of(-200, EUR), "description 3   ");
+        Transaction transaction1 = new Transaction("NL18RABO0123459876", LocalDate.of(2022, Month.JANUARY, 2), "NL98INGB0003856625", "", Money.of(221.49, EUR), "description description 2 description 3");
+        Transaction transaction2 = new Transaction("NL18RABO0123459876", LocalDate.of(2022, Month.JANUARY, 2), "NL98ABNA0416961347", "", Money.of(-200, EUR), "description 3   ");
         assertThat(result, hasItems(transaction1, transaction2));
     }
 }

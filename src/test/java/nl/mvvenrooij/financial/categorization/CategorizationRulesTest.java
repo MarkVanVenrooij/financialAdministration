@@ -13,8 +13,8 @@ import static org.hamcrest.Matchers.not;
 
 
 public class CategorizationRulesTest {
-    private final Transaction transaction =  new Transaction("account", null, "contraAccount", null, null);
-    private final Transaction transaction2 =  new Transaction("account", null, "contraAccount2", null, null);
+    private final Transaction transaction = new Transaction("account", null, "contraAccount", null, null, null);
+    private final Transaction transaction2 = new Transaction("account", null, "contraAccount2", null, null, null);
     private final Category firstCategory = new Category("firstCategory");
     private final Category secondCategory = new Category("secondCategory");
     private final Category uncategorized = new Category("UNCATEGORIZED");

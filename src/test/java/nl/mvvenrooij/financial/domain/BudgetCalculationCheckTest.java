@@ -91,6 +91,6 @@ public class BudgetCalculationCheckTest {
     }
 
     private Transaction createOneEuroTransactionInYear(Year year) {
-        return new Transaction("111", LocalDate.of(year.getValue(), 1, 1), "1", Money.of(1, "EUR"), "desc");
+        return new Transaction("111", LocalDate.of(year.getValue(), 1, 1), "1", "party", Money.of(1, "EUR"), "desc");
     }
 }
