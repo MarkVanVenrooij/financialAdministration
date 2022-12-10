@@ -2,6 +2,7 @@ package nl.mvvenrooij.financial.presentation;
 
 import nl.mvvenrooij.financial.categorization.CategorizationRules;
 import nl.mvvenrooij.financial.categorization.ContraAccountCatgegoryRule;
+import nl.mvvenrooij.financial.categorization.CounterPartyCatgegoryRule;
 import nl.mvvenrooij.financial.domain.*;
 import org.javamoney.moneta.Money;
 import org.javamoney.moneta.format.CurrencyStyle;
@@ -30,6 +31,9 @@ public class AdministrationOverview {
     private final Category rent = new Category("Rent");
     private final Category energy = new Category("Energy");
     private final Category taxes = new Category("Taxes");
+    private final Category groceries = new Category("Groceries");
+    private final Category coffeeToGo = new Category("Coffee to go");
+    private final Category electronics = new Category("Electronics");
 
     public AdministrationOverview() {
         new AmountUsedUpdater(budgetRepository);
@@ -75,6 +79,8 @@ public class AdministrationOverview {
         categorizationRules.add(new ContraAccountCatgegoryRule(taxes, "NL98INGB0003856626"));
         categorizationRules.add(new ContraAccountCatgegoryRule(rent, "NL98INGB0003856627"));
         categorizationRules.add(new ContraAccountCatgegoryRule(energy, "NL98INGB0003856628"));
+        categorizationRules.add(new CounterPartyCatgegoryRule(groceries, "counterparty"));
+        categorizationRules.add(new CounterPartyCatgegoryRule(energy, "electronics"));
         return categorizationRules;
     }
 
@@ -95,8 +101,9 @@ public class AdministrationOverview {
         categoryRepository.storeCategory(rent);
         categoryRepository.storeCategory(energy);
         categoryRepository.storeCategory(taxes);
-        categoryRepository.storeCategory(new Category("Groceries"));
-        categoryRepository.storeCategory(new Category("Coffee to go"));
+        categoryRepository.storeCategory(groceries);
+        categoryRepository.storeCategory(coffeeToGo);
+        categoryRepository.storeCategory(electronics);
         categoryRepository.storeCategory(uncategorized);
     }
 
