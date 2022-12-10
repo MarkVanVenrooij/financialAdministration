@@ -3,6 +3,7 @@ package nl.mvvenrooij.financial.presentation;
 import nl.mvvenrooij.financial.categorization.CategorizationRules;
 import nl.mvvenrooij.financial.categorization.ContraAccountCatgegoryRule;
 import nl.mvvenrooij.financial.categorization.CounterPartyCatgegoryRule;
+import nl.mvvenrooij.financial.categorization.SmallerThanAmountRule;
 import nl.mvvenrooij.financial.domain.*;
 import org.javamoney.moneta.Money;
 import org.javamoney.moneta.format.CurrencyStyle;
@@ -34,6 +35,7 @@ public class AdministrationOverview {
     private final Category groceries = new Category("Groceries");
     private final Category coffeeToGo = new Category("Coffee to go");
     private final Category electronics = new Category("Electronics");
+    private final Category other = new Category("Other");
 
     public AdministrationOverview() {
         new AmountUsedUpdater(budgetRepository);
@@ -81,6 +83,7 @@ public class AdministrationOverview {
         categorizationRules.add(new ContraAccountCatgegoryRule(energy, "NL98INGB0003856628"));
         categorizationRules.add(new CounterPartyCatgegoryRule(groceries, "counterparty"));
         categorizationRules.add(new CounterPartyCatgegoryRule(energy, "electronics"));
+        categorizationRules.add(new SmallerThanAmountRule(other, Money.of(25, EUR)));
         return categorizationRules;
     }
 
@@ -105,6 +108,8 @@ public class AdministrationOverview {
         categoryRepository.storeCategory(coffeeToGo);
         categoryRepository.storeCategory(electronics);
         categoryRepository.storeCategory(uncategorized);
+        categoryRepository.storeCategory(other);
+
     }
 
     private void createBudgets2022() {
