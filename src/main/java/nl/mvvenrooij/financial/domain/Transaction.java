@@ -64,6 +64,7 @@ public final class Transaction {
         Transaction that = (Transaction) o;
         return Objects.equals(accountNumber, that.accountNumber) &&
                 Objects.equals(date, that.date) &&
+                Objects.equals(counterParty, that.counterParty) &&
                 Objects.equals(contraAccountNumber, that.contraAccountNumber) &&
                 Objects.equals(amount, that.amount) &&
                 Objects.equals(description, that.description);
@@ -71,7 +72,7 @@ public final class Transaction {
 
     @Override
     public int hashCode() {
-        return Objects.hash(accountNumber, date, contraAccountNumber, amount, description);
+        return Objects.hash(accountNumber, date, counterParty, contraAccountNumber, amount, description);
     }
 
     @Override
@@ -86,6 +87,7 @@ public final class Transaction {
                 "accountNumber='" + accountNumber + '\'' +
                 ", date=" + date +
                 ", contraAccountNumber='" + contraAccountNumber + '\'' +
+                ", counterParty='" + counterParty + '\'' +
                 ", amount=" + amountFormatted +
                 ", description='" + description + '\'' +
                 '}';

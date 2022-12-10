@@ -40,6 +40,7 @@ public class TransactionTest {
         assertNotEquals(transaction1, transaction5);
         assertNotEquals(transaction1, transaction6);
         assertNotEquals(transaction1, transaction7);
+        assertNotEquals(transaction1, transaction8);
 
         assertEquals(accountNumber, transaction1.accountNumber());
         assertEquals(date, transaction1.date());
