@@ -109,7 +109,6 @@ public class AdministrationOverview {
         categoryRepository.storeCategory(electronics);
         categoryRepository.storeCategory(uncategorized);
         categoryRepository.storeCategory(other);
-
     }
 
     private void createBudgets2022() {
