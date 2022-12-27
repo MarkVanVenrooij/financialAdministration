@@ -82,7 +82,7 @@ public class AdministrationOverview {
         categorizationRules.add(new ContraAccountCatgegoryRule(rent, "NL98INGB0003856627"));
         categorizationRules.add(new ContraAccountCatgegoryRule(energy, "NL98INGB0003856628"));
         categorizationRules.add(new CounterPartyCatgegoryRule(groceries, "counterparty"));
-        categorizationRules.add(new CounterPartyCatgegoryRule(energy, "electronics"));
+        categorizationRules.add(new CounterPartyCatgegoryRule(electronics, "electronics"));
         categorizationRules.add(new SmallerThanAmountRule(other, Money.of(25, EUR)));
         return categorizationRules;
     }
