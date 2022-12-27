@@ -5,11 +5,11 @@ import nl.mvvenrooij.financial.domain.Transaction;
 
 import java.util.function.Function;
 
-public class BaseRule implements CategoryRule {
+public class BaseCategorizationRule implements CategorizationRule {
     private final Category categoryToAssign;
     private final Function<Transaction, Boolean> functionToApply;
 
-    public BaseRule(final Category categoryToAssign, final Function<Transaction, Boolean> functionToApply) {
+    public BaseCategorizationRule(final Category categoryToAssign, final Function<Transaction, Boolean> functionToApply) {
         this.categoryToAssign = categoryToAssign;
         this.functionToApply = functionToApply;
     }

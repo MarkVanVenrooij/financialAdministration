@@ -16,7 +16,7 @@ public class CounterPartyRuleTest {
         Transaction toCategorize = new Transaction(null, null, null, "some special my shop", null, null);
         Category category = new Category("someCategory");
 
-        CounterPartyCatgegoryRule descriptionRule = new CounterPartyCatgegoryRule(category, "some special my shop");
+        CounterPartyCatgegorizationCategorizationRule descriptionRule = new CounterPartyCatgegorizationCategorizationRule(category, "some special my shop");
         assertTrue(descriptionRule.categorize(toCategorize));
         assertThat(category.transactions(), hasItems(toCategorize));
     }
@@ -26,7 +26,7 @@ public class CounterPartyRuleTest {
         Transaction toCategorize = new Transaction(null, null, null, "another shop", null, null);
         Category category = new Category("someCategory");
 
-        CounterPartyCatgegoryRule descriptionRule = new CounterPartyCatgegoryRule(category, "some special my shop");
+        CounterPartyCatgegorizationCategorizationRule descriptionRule = new CounterPartyCatgegorizationCategorizationRule(category, "some special my shop");
         assertFalse(descriptionRule.categorize(toCategorize));
         assertThat(category.transactions(), not(hasItems(toCategorize)));
     }
@@ -36,7 +36,7 @@ public class CounterPartyRuleTest {
         Transaction toCategorize = new Transaction(null, null, null, "some special my shop", null, null);
         Category category = new Category("someCategory");
 
-        CounterPartyCatgegoryRule descriptionRule = new CounterPartyCatgegoryRule(category, "special");
+        CounterPartyCatgegorizationCategorizationRule descriptionRule = new CounterPartyCatgegorizationCategorizationRule(category, "special");
         assertTrue(descriptionRule.categorize(toCategorize));
         assertThat(category.transactions(), hasItems(toCategorize));
     }

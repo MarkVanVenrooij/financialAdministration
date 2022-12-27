@@ -8,15 +8,15 @@ import java.util.List;
 
 public class CategorizationRules {
 
-    private final List<CategoryRule> categorizationRules = new ArrayList<>();
-    private final CategoryRule uncategorizedRule;
+    private final List<CategorizationRule> categorizationRules = new ArrayList<>();
+    private final CategorizationRule uncategorizedRule;
 
     public CategorizationRules(final Category uncategorizedCategory) {
-        uncategorizedRule = new UncategorizedRule(uncategorizedCategory);
+        uncategorizedRule = new UncategorizedCategorizationCategorizationRule(uncategorizedCategory);
     }
 
-    public void add(final CategoryRule categoryRule) {
-        categorizationRules.add(categoryRule);
+    public void add(final CategorizationRule categorizationRule) {
+        categorizationRules.add(categorizationRule);
     }
 
     public void apply(final List<Transaction> transactions) {
@@ -28,7 +28,7 @@ public class CategorizationRules {
     }
 
     private void categorizeTransaction(Transaction transaction) {
-        for (CategoryRule categorizationRules : categorizationRules) {
+        for (CategorizationRule categorizationRules : categorizationRules) {
             boolean categorized = categorizationRules.categorize(transaction);
             if (categorized) {
                 return;

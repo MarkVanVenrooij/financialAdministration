@@ -29,7 +29,7 @@ public class CategorizationRulesTest {
     @Test
     public void transactionAdheresToFirstRule_IsCategorizedFirstRule() {
         CategorizationRules categorizationRules = new CategorizationRules(uncategorized);
-        categorizationRules.add(new ContraAccountCatgegoryRule(firstCategory, "contraAccount"));
+        categorizationRules.add(new ContraAccountCatgegorizationCategorizationRule(firstCategory, "contraAccount"));
 
         categorizationRules.apply(Collections.singletonList(transaction));
 
@@ -40,8 +40,8 @@ public class CategorizationRulesTest {
     @Test
     public void firstTransactionFirstCategory_SecondtransactionSecondCategory() {
         CategorizationRules categorizationRules = new CategorizationRules(uncategorized);
-        categorizationRules.add(new ContraAccountCatgegoryRule(firstCategory, "contraAccount"));
-        categorizationRules.add(new ContraAccountCatgegoryRule(secondCategory, "contraAccount2"));
+        categorizationRules.add(new ContraAccountCatgegorizationCategorizationRule(firstCategory, "contraAccount"));
+        categorizationRules.add(new ContraAccountCatgegorizationCategorizationRule(secondCategory, "contraAccount2"));
 
         categorizationRules.apply(Arrays.asList(transaction, transaction2));
 
@@ -53,8 +53,8 @@ public class CategorizationRulesTest {
     @Test
     public void transactionAdheresToSecondRule_IsCategorizedBySecondRule() {
         CategorizationRules categorizationRules = new CategorizationRules(uncategorized);
-        categorizationRules.add(new ContraAccountCatgegoryRule(firstCategory, "contraAccount2"));
-        categorizationRules.add(new ContraAccountCatgegoryRule(secondCategory, "contraAccount"));
+        categorizationRules.add(new ContraAccountCatgegorizationCategorizationRule(firstCategory, "contraAccount2"));
+        categorizationRules.add(new ContraAccountCatgegorizationCategorizationRule(secondCategory, "contraAccount"));
 
         categorizationRules.apply(Collections.singletonList(transaction));
 

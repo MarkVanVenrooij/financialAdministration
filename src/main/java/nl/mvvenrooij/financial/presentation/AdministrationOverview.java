@@ -1,9 +1,9 @@
 package nl.mvvenrooij.financial.presentation;
 
 import nl.mvvenrooij.financial.categorization.CategorizationRules;
-import nl.mvvenrooij.financial.categorization.ContraAccountCatgegoryRule;
-import nl.mvvenrooij.financial.categorization.CounterPartyCatgegoryRule;
-import nl.mvvenrooij.financial.categorization.SmallerThanAmountRule;
+import nl.mvvenrooij.financial.categorization.ContraAccountCatgegorizationCategorizationRule;
+import nl.mvvenrooij.financial.categorization.CounterPartyCatgegorizationCategorizationRule;
+import nl.mvvenrooij.financial.categorization.SmallerThanAmountCategorizationCategorizationRule;
 import nl.mvvenrooij.financial.domain.*;
 import org.javamoney.moneta.Money;
 import org.javamoney.moneta.format.CurrencyStyle;
@@ -77,13 +77,13 @@ public class AdministrationOverview {
 
     private CategorizationRules createCategorizationRules() {
         CategorizationRules categorizationRules = new CategorizationRules(uncategorized);
-        categorizationRules.add(new ContraAccountCatgegoryRule(salary, "NL98INGB0003856625"));
-        categorizationRules.add(new ContraAccountCatgegoryRule(taxes, "NL98INGB0003856626"));
-        categorizationRules.add(new ContraAccountCatgegoryRule(rent, "NL98INGB0003856627"));
-        categorizationRules.add(new ContraAccountCatgegoryRule(energy, "NL98INGB0003856628"));
-        categorizationRules.add(new CounterPartyCatgegoryRule(groceries, "counterparty"));
-        categorizationRules.add(new CounterPartyCatgegoryRule(electronics, "electronics"));
-        categorizationRules.add(new SmallerThanAmountRule(other, Money.of(25, EUR)));
+        categorizationRules.add(new ContraAccountCatgegorizationCategorizationRule(salary, "NL98INGB0003856625"));
+        categorizationRules.add(new ContraAccountCatgegorizationCategorizationRule(taxes, "NL98INGB0003856626"));
+        categorizationRules.add(new ContraAccountCatgegorizationCategorizationRule(rent, "NL98INGB0003856627"));
+        categorizationRules.add(new ContraAccountCatgegorizationCategorizationRule(energy, "NL98INGB0003856628"));
+        categorizationRules.add(new CounterPartyCatgegorizationCategorizationRule(groceries, "counterparty"));
+        categorizationRules.add(new CounterPartyCatgegorizationCategorizationRule(electronics, "electronics"));
+        categorizationRules.add(new SmallerThanAmountCategorizationCategorizationRule(other, Money.of(25, EUR)));
         return categorizationRules;
     }
 
