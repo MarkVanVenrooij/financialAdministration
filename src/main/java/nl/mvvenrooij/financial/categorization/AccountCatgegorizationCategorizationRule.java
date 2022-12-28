@@ -6,4 +6,6 @@ public class AccountCatgegorizationCategorizationRule extends BaseCategorization
     public AccountCatgegorizationCategorizationRule(final Category category, final String bankAccountNumber) {
         super(category, (transaction) -> bankAccountNumber.equals(transaction.accountNumber()));
     }
+
+
 }
