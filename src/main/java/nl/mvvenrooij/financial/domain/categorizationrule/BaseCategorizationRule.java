@@ -1,4 +1,4 @@
-package nl.mvvenrooij.financial.categorization;
+package nl.mvvenrooij.financial.domain.categorizationrule;
 
 import nl.mvvenrooij.financial.domain.Category;
 import nl.mvvenrooij.financial.domain.Transaction;
@@ -34,5 +34,15 @@ public abstract class BaseCategorizationRule implements CategorizationRule {
     @Override
     public int hashCode() {
         return Objects.hash(categoryToAssign, functionToApply);
+    }
+
+    @Override
+    public boolean matches(final Transaction transaction) {
+        return functionToApply.apply(transaction);
+    }
+
+    @Override
+    public Category category() {
+        return categoryToAssign;
     }
 }

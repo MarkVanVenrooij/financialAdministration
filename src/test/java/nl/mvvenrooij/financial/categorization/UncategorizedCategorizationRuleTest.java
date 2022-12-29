@@ -2,6 +2,7 @@ package nl.mvvenrooij.financial.categorization;
 
 import nl.mvvenrooij.financial.domain.Category;
 import nl.mvvenrooij.financial.domain.Transaction;
+import nl.mvvenrooij.financial.domain.categorizationrule.UncategorizedCategorizationCategorizationRule;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;

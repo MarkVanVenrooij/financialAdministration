@@ -1,4 +1,4 @@
-package nl.mvvenrooij.financial.categorization;
+package nl.mvvenrooij.financial.domain.categorizationrule;
 
 import nl.mvvenrooij.financial.domain.Category;
 
