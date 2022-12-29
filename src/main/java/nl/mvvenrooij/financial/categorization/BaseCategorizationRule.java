@@ -18,7 +18,7 @@ public abstract class BaseCategorizationRule implements CategorizationRule {
     @Override
     public boolean categorize(final Transaction transaction) {
         if (functionToApply.apply(transaction)) {
-            categoryToAssign.addTransactions(transaction);
+           // categoryToAssign.addTransactions(transaction);
             return true;
         }
         return false;

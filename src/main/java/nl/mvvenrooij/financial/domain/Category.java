@@ -1,18 +1,22 @@
 package nl.mvvenrooij.financial.domain;
 
+import nl.mvvenrooij.financial.categorization.CategorizationRule;
 import nl.mvvenrooij.financial.domainevents.EventBus;
 import org.javamoney.moneta.Money;
 
 import javax.money.CurrencyUnit;
 import javax.money.Monetary;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class Category {
     private static final CurrencyUnit EUR = Monetary.getCurrency("EUR");
     private final String name;
-
     private final List<Transaction> transactions = new ArrayList<>();
+
+    private final List<CategorizationRule> rules = new ArrayList<>();
 
     public Category(final String name) {
         this.name = name;
@@ -23,8 +27,26 @@ public class Category {
     }
 
     public void addTransactions(final Transaction... transactions) {
-        this.transactions.addAll(Arrays.asList(transactions));
-        EventBus.getInstance().publish(new CategoryUpdated(this));
+        for (Transaction transaction : transactions) {
+            if (shouldCategorizeTransaction(transaction)) {
+                this.transactions.add(transaction);
+                EventBus.getInstance().publish(new CategoryUpdated(this));
+            }
+        }
+    }
+
+    private boolean shouldCategorizeTransaction(Transaction transaction) {
+        for (CategorizationRule categorizationRule : rules) {
+            boolean categorized = categorizationRule.categorize(transaction);
+            if (categorized) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void addCategorizationRule(final CategorizationRule rule) {
+        this.rules.add(rule);
     }
 
     public Money totalInInterval(final LocalDate startDate, final LocalDate endDate) {
