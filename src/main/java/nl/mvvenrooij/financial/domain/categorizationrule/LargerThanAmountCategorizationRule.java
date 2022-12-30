@@ -3,8 +3,8 @@ package nl.mvvenrooij.financial.domain.categorizationrule;
 import nl.mvvenrooij.financial.domain.Category;
 import org.javamoney.moneta.Money;
 
-public class LargerThanAmountCategorizationCategorizationRule extends BaseCategorizationRule {
-    public LargerThanAmountCategorizationCategorizationRule(final Category category, final Money amountToCompareTo) {
+public class LargerThanAmountCategorizationRule extends BaseCategorizationRule {
+    public LargerThanAmountCategorizationRule(final Category category, final Money amountToCompareTo) {
         super(category, (transaction -> amountToCompareTo.isLessThan(transaction.amount())));
     }
 }

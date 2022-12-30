@@ -1,17 +1,13 @@
-package nl.mvvenrooij.financial.categorization;
+package nl.mvvenrooij.financial.domain.categorizationrule;
 
 import nl.mvvenrooij.financial.domain.Category;
 import nl.mvvenrooij.financial.domain.Transaction;
-import nl.mvvenrooij.financial.domain.categorizationrule.SmallerThanAmountCategorizationCategorizationRule;
 import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.Test;
 
 import javax.money.CurrencyUnit;
 import javax.money.Monetary;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasItems;
-import static org.hamcrest.Matchers.not;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -24,9 +20,8 @@ public class SmallerThanAmountCategorizationRuleTest {
         final Transaction toCategorize = new Transaction(null, null, null, null, Money.of(-1, EUR), null);
         final Category category = new Category("someCategory");
         final Money zero = Money.of(10, EUR);
-        SmallerThanAmountCategorizationCategorizationRule largerThanAmountRule = new SmallerThanAmountCategorizationCategorizationRule(category, zero);
-        assertTrue(largerThanAmountRule.categorize(toCategorize));
-        assertThat(category.transactions(), hasItems(toCategorize));
+        SmallerThanAmountCategorizationRule largerThanAmountRule = new SmallerThanAmountCategorizationRule(category, zero);
+        assertTrue(largerThanAmountRule.matches(toCategorize));
     }
 
     @Test
@@ -34,8 +29,7 @@ public class SmallerThanAmountCategorizationRuleTest {
         final Transaction toCategorize = new Transaction(null, null, null, null, Money.of(1, EUR), null);
         final Category category = new Category("someCategory");
         final Money zero = Money.zero(EUR);
-        SmallerThanAmountCategorizationCategorizationRule largerThanAmountRule = new SmallerThanAmountCategorizationCategorizationRule(category, zero);
-        assertFalse(largerThanAmountRule.categorize(toCategorize));
-        assertThat(category.transactions(), not(hasItems(toCategorize)));
+        SmallerThanAmountCategorizationRule largerThanAmountRule = new SmallerThanAmountCategorizationRule(category, zero);
+        assertFalse(largerThanAmountRule.matches(toCategorize));
     }
 }

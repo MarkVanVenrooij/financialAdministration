@@ -2,9 +2,9 @@ package nl.mvvenrooij.financial.presentation;
 
 import nl.mvvenrooij.financial.domain.*;
 import nl.mvvenrooij.financial.domain.categorizationrule.CategorizationRuleRepository;
-import nl.mvvenrooij.financial.domain.categorizationrule.ContraAccountCatgegorizationCategorizationRule;
-import nl.mvvenrooij.financial.domain.categorizationrule.CounterPartyCatgegorizationCategorizationRule;
-import nl.mvvenrooij.financial.domain.categorizationrule.SmallerThanAmountCategorizationCategorizationRule;
+import nl.mvvenrooij.financial.domain.categorizationrule.ContraAccountCategorizationRule;
+import nl.mvvenrooij.financial.domain.categorizationrule.CounterPartyCategorizationRule;
+import nl.mvvenrooij.financial.domain.categorizationrule.SmallerThanAmountCategorizationRule;
 import org.javamoney.moneta.Money;
 import org.javamoney.moneta.format.CurrencyStyle;
 
@@ -84,13 +84,13 @@ public class AdministrationOverview {
     private CategorizationRuleRepository createCategorizationRules() {
         CategorizationRuleRepository categorizationRuleRepository = new CategorizationRuleRepository();
 
-        categorizationRuleRepository.add(new ContraAccountCatgegorizationCategorizationRule(salary, "NL98INGB0003856625"));
-        categorizationRuleRepository.add(new ContraAccountCatgegorizationCategorizationRule(taxes, "NL98INGB0003856626"));
-        categorizationRuleRepository.add(new ContraAccountCatgegorizationCategorizationRule(rent, "NL98INGB0003856627"));
-        categorizationRuleRepository.add(new ContraAccountCatgegorizationCategorizationRule(energy, "NL98INGB0003856628"));
-        categorizationRuleRepository.add(new CounterPartyCatgegorizationCategorizationRule(groceries, "counterparty"));
-        categorizationRuleRepository.add(new CounterPartyCatgegorizationCategorizationRule(electronics, "electronics"));
-        categorizationRuleRepository.add(new SmallerThanAmountCategorizationCategorizationRule(other, Money.of(25, EUR)));
+        categorizationRuleRepository.add(new ContraAccountCategorizationRule(salary, "NL98INGB0003856625"));
+        categorizationRuleRepository.add(new ContraAccountCategorizationRule(taxes, "NL98INGB0003856626"));
+        categorizationRuleRepository.add(new ContraAccountCategorizationRule(rent, "NL98INGB0003856627"));
+        categorizationRuleRepository.add(new ContraAccountCategorizationRule(energy, "NL98INGB0003856628"));
+        categorizationRuleRepository.add(new CounterPartyCategorizationRule(groceries, "counterparty"));
+        categorizationRuleRepository.add(new CounterPartyCategorizationRule(electronics, "electronics"));
+        categorizationRuleRepository.add(new SmallerThanAmountCategorizationRule(other, Money.of(25, EUR)));
         return categorizationRuleRepository;
     }
 

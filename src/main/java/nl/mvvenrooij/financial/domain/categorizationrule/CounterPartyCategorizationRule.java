@@ -2,9 +2,9 @@ package nl.mvvenrooij.financial.domain.categorizationrule;
 
 import nl.mvvenrooij.financial.domain.Category;
 
-public class CounterPartyCatgegorizationCategorizationRule extends BaseCategorizationRule {
+public class CounterPartyCategorizationRule extends BaseCategorizationRule {
 
-    public CounterPartyCatgegorizationCategorizationRule(final Category category, final String counterParty) {
+    public CounterPartyCategorizationRule(final Category category, final String counterParty) {
         super(category, (transaction) -> transaction.counterParty().contains(counterParty));
     }
 }
