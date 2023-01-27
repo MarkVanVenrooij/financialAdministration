@@ -8,4 +8,6 @@ public interface CategorizationRule {
     boolean matches(final Transaction transaction);
 
     Category category();
+
+    Object constructorValue();
 }

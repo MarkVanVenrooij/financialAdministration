@@ -1,10 +1,11 @@
 package nl.mvvenrooij.financial.presentation;
 
 import nl.mvvenrooij.financial.domain.*;
+import nl.mvvenrooij.financial.domain.categorizationrule.CategorizationRule;
 import nl.mvvenrooij.financial.domain.categorizationrule.CategorizationRuleRepository;
-import nl.mvvenrooij.financial.domain.categorizationrule.ContraAccountCategorizationRule;
-import nl.mvvenrooij.financial.domain.categorizationrule.CounterPartyCategorizationRule;
-import nl.mvvenrooij.financial.domain.categorizationrule.SmallerThanAmountCategorizationRule;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.csv.CSVRecord;
 import org.javamoney.moneta.Money;
 import org.javamoney.moneta.format.CurrencyStyle;
 
@@ -16,6 +17,12 @@ import javax.money.format.MonetaryFormats;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.Writer;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.Year;
 import java.util.List;
@@ -29,20 +36,14 @@ public class AdministrationOverview {
     private final BudgetFactory budgetFactory = new BudgetFactory(categoryRepository);
     private static final CurrencyUnit EUR = Monetary.getCurrency("EUR");
     private final Category uncategorized = new Category("UNCATEGORIZED");
-    private final Category salary = new Category("Salary");
-    private final Category rent = new Category("Rent");
-    private final Category energy = new Category("Energy");
-    private final Category taxes = new Category("Taxes");
-    private final Category groceries = new Category("Groceries");
-    private final Category coffeeToGo = new Category("Coffee to go");
-    private final Category electronics = new Category("Electronics");
-    private final Category other = new Category("Other");
+    private final CategorizationRuleRepository categorizationRuleRepository = new CategorizationRuleRepository();
+
 
     public AdministrationOverview() {
         new AmountUsedUpdater(budgetRepository);
-        createCategories();
+        readCategories();
         createBudgets2022();
-        CategorizationRuleRepository categorizationRuleRepository = createCategorizationRules();
+        readRules();
         Categorization categorization = new Categorization(categorizationRuleRepository);
 
         final List<Transaction> transactionsList = importTransactions();
@@ -81,19 +82,6 @@ public class AdministrationOverview {
         }
     }
 
-    private CategorizationRuleRepository createCategorizationRules() {
-        CategorizationRuleRepository categorizationRuleRepository = new CategorizationRuleRepository();
-
-        categorizationRuleRepository.add(new ContraAccountCategorizationRule(salary, "NL98INGB0003856625"));
-        categorizationRuleRepository.add(new ContraAccountCategorizationRule(taxes, "NL98INGB0003856626"));
-        categorizationRuleRepository.add(new ContraAccountCategorizationRule(rent, "NL98INGB0003856627"));
-        categorizationRuleRepository.add(new ContraAccountCategorizationRule(energy, "NL98INGB0003856628"));
-        categorizationRuleRepository.add(new CounterPartyCategorizationRule(groceries, "counterparty"));
-        categorizationRuleRepository.add(new CounterPartyCategorizationRule(electronics, "electronics"));
-        categorizationRuleRepository.add(new SmallerThanAmountCategorizationRule(other, Money.of(25, EUR)));
-        return categorizationRuleRepository;
-    }
-
     private List<Transaction> importTransactions() {
         ClassLoader classLoader = getClass().getClassLoader();
         String file = Objects.requireNonNull(classLoader.getResource("nl/mvvenrooij/financial/import/transactions.csv")).getFile();
@@ -106,18 +94,6 @@ public class AdministrationOverview {
         }
     }
 
-    private void createCategories() {
-        categoryRepository.storeCategory(salary);
-        categoryRepository.storeCategory(rent);
-        categoryRepository.storeCategory(energy);
-        categoryRepository.storeCategory(taxes);
-        categoryRepository.storeCategory(groceries);
-        categoryRepository.storeCategory(coffeeToGo);
-        categoryRepository.storeCategory(electronics);
-        categoryRepository.storeCategory(uncategorized);
-        categoryRepository.storeCategory(other);
-    }
-
     private void createBudgets2022() {
         budgetFactory.createBudget("Salary", Year.of(2022), Money.of(1000, EUR));
         budgetFactory.createBudget("Rent", Year.of(2022), Money.of(500, EUR));
@@ -127,4 +103,86 @@ public class AdministrationOverview {
     public static void main(final String... args) {
         new AdministrationOverview();
     }
+
+    public void saveCategories() {
+        ClassLoader classLoader = getClass().getClassLoader();
+        URL file = classLoader.getResource("nl/mvvenrooij/financial/import");
+
+        try {
+            Writer out = Files.newBufferedWriter(Paths.get(file.getPath() + "/categories.csv"));
+
+            CSVPrinter csvPrinter = new CSVPrinter(out, CSVFormat.DEFAULT
+                    .withHeader("name"));
+            for (Category category : categoryRepository.categories()) {
+                csvPrinter.printRecord(category.name());
+            }
+            csvPrinter.flush();
+            csvPrinter.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void readCategories() {
+        ClassLoader classLoader = getClass().getClassLoader();
+        String file = Objects.requireNonNull(classLoader.getResource("nl/mvvenrooij/financial/import/categories.csv")).getFile();
+        try {
+            Reader in = new FileReader(file);
+            Iterable<CSVRecord> records = CSVFormat.DEFAULT
+                    .withHeader("name")
+                    .withFirstRecordAsHeader()
+                    .parse(in);
+            for (CSVRecord record : records) {
+                categoryRepository.storeCategory(new Category(record.get("name")));
+            }
+        } catch (final IOException ioException) {
+            throw new RuntimeException(ioException);
+        }
+    }
+
+    public void saveRules() {
+        ClassLoader classLoader = getClass().getClassLoader();
+        URL file = classLoader.getResource("nl/mvvenrooij/financial/import");
+
+        try {
+            Writer out = Files.newBufferedWriter(Paths.get(file.getPath() + "/rules.csv"));
+
+            CSVPrinter csvPrinter = new CSVPrinter(out, CSVFormat.DEFAULT
+                    .withHeader("type", "categoryName", "constructorValue"));
+            for (CategorizationRule rule : categorizationRuleRepository.categorizationRules()) {
+                csvPrinter.printRecord(rule.getClass().getName(), rule.category().name(), rule.constructorValue());
+            }
+            csvPrinter.flush();
+            csvPrinter.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void readRules() {
+        ClassLoader classLoader = getClass().getClassLoader();
+        String file = Objects.requireNonNull(classLoader.getResource("nl/mvvenrooij/financial/import/rules.csv")).getFile();
+        try {
+            Reader in = new FileReader(file);
+            Iterable<CSVRecord> records = CSVFormat.DEFAULT
+                    .withHeader("type", "categoryName", "constructorValue")
+                    .withFirstRecordAsHeader()
+                    .parse(in);
+            for (CSVRecord record : records) {
+                //some reflection
+
+                Class<? extends CategorizationRule> clazz = (Class<? extends CategorizationRule>) Class.forName(record.get("type"));
+
+                Constructor<?> ctor = clazz.getDeclaredConstructors()[0];
+
+                CategorizationRule rule = (CategorizationRule) ctor.newInstance(categoryRepository.findCategoryByName(record.get("categoryName")).get(), record.get("constructorValue"));
+
+                categorizationRuleRepository.add(rule);
+            }
+        } catch (final IOException | ClassNotFoundException | IllegalAccessException | InstantiationException |
+                       InvocationTargetException ioException) {
+            throw new RuntimeException(ioException);
+        }
+    }
+
 }

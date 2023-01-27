@@ -1,0 +1,8 @@
+type,categoryName,constructorValue
+nl.mvvenrooij.financial.domain.categorizationrule.ContraAccountCategorizationRule,Salary,NL98INGB0003856625
+nl.mvvenrooij.financial.domain.categorizationrule.ContraAccountCategorizationRule,Taxes,NL98INGB0003856626
+nl.mvvenrooij.financial.domain.categorizationrule.ContraAccountCategorizationRule,Rent,NL98INGB0003856627
+nl.mvvenrooij.financial.domain.categorizationrule.ContraAccountCategorizationRule,Energy,NL98INGB0003856628
+nl.mvvenrooij.financial.domain.categorizationrule.CounterPartyCategorizationRule,Groceries,counterparty
+nl.mvvenrooij.financial.domain.categorizationrule.CounterPartyCategorizationRule,Electronics,electronics
+nl.mvvenrooij.financial.domain.categorizationrule.SmallerThanAmountCategorizationRule,Other,EUR 25.00
