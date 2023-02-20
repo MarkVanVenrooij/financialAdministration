@@ -44,5 +44,10 @@ public class BaseCategorizationRuleTest {
         public MockRule(Category categoryToAssign, Function<Transaction, Boolean> functionToApply) {
             super(categoryToAssign, functionToApply);
         }
+
+        @Override
+        public Object constructorValue() {
+            return null;
+        }
     }
 }
