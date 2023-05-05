@@ -13,19 +13,17 @@ import java.time.Year;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class BudgetUsageTest {
+public class EvenSpreadBudgetTest {
 
     public static final CurrencyUnit EUR = Monetary.getCurrency("EUR");
-    private static BudgetRepository budgetRepository;
-    private static Category someCat;
     private static Budget budget;
 
     @BeforeAll
     public static void setUp() {
-        budgetRepository = new BudgetRepository();
+        BudgetRepository budgetRepository = new BudgetRepository();
         new AmountUsedUpdater(budgetRepository);
         CategoryRepository categoryRepository = new CategoryRepository();
-        someCat = new Category("someCat");
+        Category someCat = new Category("someCat");
         categoryRepository.storeCategory(someCat);
         BudgetFactory factory = new BudgetFactory(categoryRepository);
 
