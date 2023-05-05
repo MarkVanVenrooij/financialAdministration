@@ -25,10 +25,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.Year;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 public class AdministrationOverview {
     private final CategoryRepository categoryRepository = new CategoryRepository();
@@ -53,8 +50,11 @@ public class AdministrationOverview {
             categoryOptional.ifPresentOrElse((category -> category.addTransactions(transaction)), () -> uncategorized.addTransactions(transaction));
         }
 
-        printCategoryAmounts();
-        printUncatgegorizedItems();
+        //  printCategoryAmounts();
+        //  printUncatgegorizedItems();
+
+        Set<Budget> budgets = budgetRepository.findAllBudgetsByYear(Year.of(2022));
+        System.out.println(budgets);
     }
 
     private void printCategoryAmounts() {
@@ -95,9 +95,11 @@ public class AdministrationOverview {
     }
 
     private void createBudgets2022() {
-        budgetFactory.createBudget("Salary", Year.of(2022), Money.of(1000, EUR));
-        budgetFactory.createBudget("Rent", Year.of(2022), Money.of(500, EUR));
-        budgetFactory.createBudget("Groceries", Year.of(2022), Money.of(300, EUR));
+        budgetRepository.storeBudget(budgetFactory.createBudget("Salary", Year.of(2022), Money.of(1000, EUR)));
+        budgetRepository.storeBudget(budgetFactory.createBudget("Rent", Year.of(2022), Money.of(-500, EUR)));
+        budgetRepository.storeBudget(budgetFactory.createBudget("Groceries", Year.of(2022), Money.of(-300, EUR)));
+        budgetRepository.storeBudget(budgetFactory.createBudget("Other", Year.of(2022), Money.of(0, EUR)));
+
     }
 
     public static void main(final String... args) {

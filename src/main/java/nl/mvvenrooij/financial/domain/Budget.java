@@ -3,6 +3,7 @@ package nl.mvvenrooij.financial.domain;
 import org.javamoney.moneta.Money;
 
 import javax.money.Monetary;
+import java.time.Month;
 import java.time.Year;
 import java.util.Objects;
 
@@ -69,5 +70,9 @@ public class Budget {
                 ", amountUsed=" + amountUsed +
                 ", amountLeft=" + amountLeft() +
                 "}\n";
+    }
+
+    public Money amountLeftMonth(final Month month) {
+        return amountPlanned.divide(12).multiply(month.getValue()).subtract(amountUsed);
     }
 }
