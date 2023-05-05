@@ -1,6 +1,7 @@
 package nl.mvvenrooij.financial.presentation;
 
 import nl.mvvenrooij.financial.domain.*;
+import nl.mvvenrooij.financial.domainevents.EventBus;
 import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -21,13 +22,16 @@ public class EvenSpreadBudgetTest {
     @BeforeAll
     public static void setUp() {
         BudgetRepository budgetRepository = new BudgetRepository();
-        new AmountUsedUpdater(budgetRepository);
+        EventBus<CategoryUpdated> eventBus = new EventBus<>();
+        new AmountUsedUpdater(budgetRepository, eventBus);
+        Category.setEventBus(eventBus);
+
         CategoryRepository categoryRepository = new CategoryRepository();
-        Category someCat = new Category("someCat");
+        Category someCat = new Category("mySpecialCategory");
         categoryRepository.storeCategory(someCat);
         BudgetFactory factory = new BudgetFactory(categoryRepository);
 
-        budget = factory.createBudget("someCat", Year.of(2023), Money.of(1200, EUR));
+        budget = factory.createEvenlySpreadBudget("mySpecialCategory", Year.of(2023), Money.of(1200, EUR));
         budgetRepository.storeBudget(budget);
 
         someCat.addTransactions(new Transaction("account", LocalDate.of(2023, Month.JANUARY, 3), "contra", "counterparty", Money.of(70, EUR), "desc"));

@@ -2,18 +2,23 @@ package nl.mvvenrooij.financial.domain;
 
 import org.javamoney.moneta.Money;
 
+import javax.money.CurrencyUnit;
 import javax.money.Monetary;
 import java.time.Month;
 import java.time.Year;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class Budget {
+    public static final CurrencyUnit EUR = Monetary.getCurrency("EUR");
     private final String categoryName;
     private final Year year;
-    private final Money amountPlanned;
-    private Money amountUsed = Money.zero(Monetary.getCurrency("EUR"));
 
-    Budget(final String categoryName, final Year year, final Money amountPlanned) {
+    private Map<Month, Money> amountPlanned;
+    private Map<Month, Money> amountUsed = new HashMap<>();
+
+    Budget(final String categoryName, final Year year, final Map<Month, Money> amountPlanned) {
         this.categoryName = categoryName;
         this.year = year;
         this.amountPlanned = amountPlanned;
@@ -28,19 +33,23 @@ public class Budget {
     }
 
     public Money amountPlanned() {
-        return amountPlanned;
+        return amountPlanned.values().stream().reduce(Money.zero(EUR), Money::add);
+    }
+
+    private Money amountUsed() {
+        return amountUsed.values().stream().reduce(Money.zero(EUR), Money::add);
     }
 
     public Money amountLeft() {
-        return amountPlanned.subtract( amountUsed);
+        return amountPlanned().subtract(amountUsed());
     }
 
-    public void updateAmountUsed(final Money amountUsed) {
+    public void updateAmountUsed(final Map<Month, Money> amountUsed) {
         this.amountUsed = amountUsed;
     }
 
     public Money remaining() {
-        return amountPlanned.subtract(amountUsed);
+        return amountLeft();
     }
 
     @Override
@@ -73,6 +82,17 @@ public class Budget {
     }
 
     public Money amountLeftMonth(final Month month) {
-        return amountPlanned.divide(12).multiply(month.getValue()).subtract(amountUsed);
+
+        Money amountPlannedTillMonth = this.amountPlanned.entrySet().stream()
+                .filter(monthlyBudget -> monthlyBudget.getKey().getValue() <= month.getValue())
+                .map(Map.Entry::getValue)
+                .reduce(Money.zero(EUR), Money::add);
+
+        Money amountUsedTillMonth = this.amountUsed.entrySet().stream()
+                .filter(monthlyBudget -> monthlyBudget.getKey().getValue() <= month.getValue())
+                .map(Map.Entry::getValue)
+                .reduce(Money.zero(EUR), Money::add);
+
+        return amountPlannedTillMonth.subtract(amountUsedTillMonth);
     }
 }

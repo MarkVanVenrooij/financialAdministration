@@ -6,11 +6,16 @@ import org.javamoney.moneta.Money;
 import javax.money.CurrencyUnit;
 import javax.money.Monetary;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 public class Category {
     private static final CurrencyUnit EUR = Monetary.getCurrency("EUR");
     private final String name;
+
+    private static EventBus<CategoryUpdated> eventBus;
 
     private final List<Transaction> transactions = new ArrayList<>();
 
@@ -24,7 +29,10 @@ public class Category {
 
     public void addTransactions(final Transaction... transactions) {
         this.transactions.addAll(Arrays.asList(transactions));
-        EventBus.getInstance().publish(new CategoryUpdated(this));
+        if (eventBus != null) {
+            eventBus.publish(new CategoryUpdated(this));
+        }
+
     }
 
     public Money totalInInterval(final LocalDate startDate, final LocalDate endDate) {
@@ -54,5 +62,9 @@ public class Category {
     @Override
     public int hashCode() {
         return Objects.hash(name);
+    }
+
+    public static void setEventBus(EventBus<CategoryUpdated> eventBus) {
+        Category.eventBus = eventBus;
     }
 }

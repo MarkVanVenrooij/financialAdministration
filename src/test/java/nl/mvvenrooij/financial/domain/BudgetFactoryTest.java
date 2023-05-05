@@ -12,7 +12,7 @@ public class BudgetFactoryTest {
 
     private static final String EXISTING_CATEGORY = "anExistingCategory";
     private static final String NON_EXISTING_CATEGORY = "nonExistingCategory";
-    private static final Money EUR_20 = Money.of(20, "EUR");
+    private static final Money EUR_24 = Money.of(24, "EUR");
     private static final Year _2018 = Year.of(2018);
     private static final Year _2017 = Year.of(2017);
 
@@ -30,17 +30,17 @@ public class BudgetFactoryTest {
 
     @Test
     public void createBudget() {
-        assertNotNull(budgetFactory.createBudget(EXISTING_CATEGORY, _2018, EUR_20));
+        assertNotNull(budgetFactory.createEvenlySpreadBudget(EXISTING_CATEGORY, _2018, EUR_24));
     }
 
     @Test
     public void createBudgetForCategoryThatNotExists() {
-        assertThrows(CategoryDoesNotExist.class, () -> budgetFactory.createBudget(NON_EXISTING_CATEGORY, _2018, EUR_20));
+        assertThrows(CategoryDoesNotExist.class, () -> budgetFactory.createEvenlySpreadBudget(NON_EXISTING_CATEGORY, _2018, EUR_24));
     }
 
     @Test
     public void createBudgetForYearBasedOnOtherBudget() {
-        final Budget oldBudget = budgetFactory.createBudget(EXISTING_CATEGORY, _2017, EUR_20);
+        final Budget oldBudget = budgetFactory.createEvenlySpreadBudget(EXISTING_CATEGORY, _2017, EUR_24);
         budgetRepository.storeBudget(oldBudget);
 
         final Budget budget = budgetFactory.createBudgetForYearBasedOnOtherBudget(EXISTING_CATEGORY, _2018, oldBudget);
@@ -48,7 +48,8 @@ public class BudgetFactoryTest {
         assertNotNull(budget);
         assertEquals(EXISTING_CATEGORY, budget.categoryName());
         assertEquals(_2018, budget.year());
-        assertEquals(EUR_20, budget.remaining());
+        assertEquals(EUR_24, budget.remaining());
+
     }
 
     @Test

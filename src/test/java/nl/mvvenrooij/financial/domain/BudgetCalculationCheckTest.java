@@ -1,5 +1,6 @@
 package nl.mvvenrooij.financial.domain;
 
+import nl.mvvenrooij.financial.domainevents.EventBus;
 import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,8 +23,10 @@ public class BudgetCalculationCheckTest {
 
     @BeforeAll
     static void repoSetup() {
+        EventBus<CategoryUpdated> eventBus = new EventBus<>();
         budgetRepository = new BudgetRepository();
-        new AmountUsedUpdater(budgetRepository);
+        Category.setEventBus(eventBus);
+        new AmountUsedUpdater(budgetRepository, eventBus);
     }
 
     @BeforeEach
@@ -33,19 +36,17 @@ public class BudgetCalculationCheckTest {
         category = new Category(categoryName);
         categoryRepository.storeCategory(category);
         budgetFactory = new BudgetFactory(categoryRepository);
-
     }
 
     @Test
     void zeroBudgetWithZeroTransactionsNoDifference() {
-        Budget budget = budgetFactory.createBudget(category.name(), Year.of(2018), Money.zero(EUR));
-
+        Budget budget = budgetFactory.createEvenlySpreadBudget(category.name(), Year.of(2018), Money.zero(EUR));
         assertEquals(Money.zero(Monetary.getCurrency("EUR")), budget.remaining());
     }
 
     @Test
     void zeroBudgetWithSingleTransactionHasNegativeDifference() {
-        Budget budget = budgetFactory.createBudget(category.name(), Year.of(2018), Money.zero(EUR));
+        Budget budget = budgetFactory.createEvenlySpreadBudget(category.name(), Year.of(2018), Money.zero(EUR));
         budgetRepository.storeBudget(budget);
 
         addAndStoreTransactionInYear(Year.of(2018));
@@ -55,22 +56,22 @@ public class BudgetCalculationCheckTest {
     }
 
     @Test
-    void tenEuroBudgetWithSingleTransactionHasPositiveDifference() {
-        Budget budget = budgetFactory.createBudget(category.name(), Year.of(2018), Money.of(10, EUR));
+    void twelveEuroBudgetWithSingleTransactionHasPositiveDifference() {
+        Budget budget = budgetFactory.createEvenlySpreadBudget(category.name(), Year.of(2018), Money.of(12, EUR));
         budgetRepository.storeBudget(budget);
 
         addAndStoreTransactionInYear(Year.of(2018));
 
         Budget budgetFound = budgetRepository.findExistingBudgetByNameAndYear(budget.categoryName(), budget.year());
-        assertEquals(Money.of(9, "EUR"), budgetFound.remaining());
+        assertEquals(Money.of(11, EUR), budgetFound.remaining());
     }
 
     @Test
     void twoBudgetsAreUpdatedWhithMultipleTransactions() {
-        Budget budget1 = budgetFactory.createBudget(category.name(), Year.of(2017), Money.of(10, EUR));
+        Budget budget1 = budgetFactory.createEvenlySpreadBudget(category.name(), Year.of(2017), Money.of(12, EUR));
         budgetRepository.storeBudget(budget1);
 
-        Budget budget2 = budgetFactory.createBudget(category.name(), Year.of(2018), Money.of(20, EUR));
+        Budget budget2 = budgetFactory.createEvenlySpreadBudget(category.name(), Year.of(2018), Money.of(24, EUR));
         budgetRepository.storeBudget(budget2);
 
         addAndStoreTransactionInYear(Year.of(2017));
@@ -78,10 +79,10 @@ public class BudgetCalculationCheckTest {
         addAndStoreTransactionInYear(Year.of(2018));
 
         Budget budgetFound1 = budgetRepository.findExistingBudgetByNameAndYear(budget1.categoryName(), budget1.year());
-        assertEquals(Money.of(9, "EUR"), budgetFound1.remaining());
+        assertEquals(Money.of(11, EUR), budgetFound1.remaining());
 
         Budget budgetFound2 = budgetRepository.findExistingBudgetByNameAndYear(budget2.categoryName(), budget2.year());
-        assertEquals(Money.of(18, "EUR"), budgetFound2.remaining());
+        assertEquals(Money.of(22, EUR), budgetFound2.remaining());
     }
 
     private void addAndStoreTransactionInYear(Year year) {
@@ -91,6 +92,6 @@ public class BudgetCalculationCheckTest {
     }
 
     private Transaction createOneEuroTransactionInYear(Year year) {
-        return new Transaction("111", LocalDate.of(year.getValue(), 1, 1), "1", "party", Money.of(1, "EUR"), "desc");
+        return new Transaction("111", LocalDate.of(year.getValue(), 1, 1), "1", "party", Money.of(1, EUR), "desc");
     }
 }

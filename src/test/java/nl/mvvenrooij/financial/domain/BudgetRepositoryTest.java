@@ -4,7 +4,9 @@ import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.Month;
 import java.time.Year;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -35,7 +37,7 @@ class BudgetRepositoryTest {
 
     @Test
     void findExistingBudgetByNameAndYear() {
-        final Budget budget = budgetFactory.createBudget(categoryName, Year.of(2018), EUR_20);
+        final Budget budget = budgetFactory.createEvenlySpreadBudget(categoryName, Year.of(2018), EUR_20);
         budgetRepository.storeBudget(budget);
 
         final Budget budgetFound = budgetRepository.findExistingBudgetByNameAndYear(categoryName, Year.of(2018));
@@ -52,7 +54,7 @@ class BudgetRepositoryTest {
 
     @Test
     void findExistingBudgetByName() {
-        final Budget budget = budgetFactory.createBudget(categoryName, Year.of(2018), EUR_20);
+        final Budget budget = budgetFactory.createEvenlySpreadBudget(categoryName, Year.of(2018), EUR_20);
         budgetRepository.storeBudget(budget);
 
         final Set<Budget> budgets = budgetRepository.findExistingBudgetByName(categoryName);
@@ -64,8 +66,8 @@ class BudgetRepositoryTest {
 
     @Test
     void findExistingBudgetsByName() {
-        final Budget budget1 = budgetFactory.createBudget(categoryName, Year.of(2017), EUR_20);
-        final Budget budget2 = budgetFactory.createBudget(categoryName, Year.of(2018), EUR_20);
+        final Budget budget1 = budgetFactory.createEvenlySpreadBudget(categoryName, Year.of(2017), EUR_20);
+        final Budget budget2 = budgetFactory.createEvenlySpreadBudget(categoryName, Year.of(2018), EUR_20);
         budgetRepository.storeBudget(budget1);
         budgetRepository.storeBudget(budget2);
 
@@ -87,7 +89,7 @@ class BudgetRepositoryTest {
 
     @Test
     void findSingleExistingBudgetsByYear() {
-        final Budget budget = budgetFactory.createBudget(categoryName, Year.of(2018), EUR_20);
+        final Budget budget = budgetFactory.createEvenlySpreadBudget(categoryName, Year.of(2018), EUR_20);
         budgetRepository.storeBudget(budget);
 
         final Set<Budget> budgets = budgetRepository.findAllBudgetsByYear(Year.of(2018));
@@ -98,8 +100,8 @@ class BudgetRepositoryTest {
 
     @Test
     void findExistingBudgetsByYear() {
-        final Budget budget1 = budgetFactory.createBudget(categoryName, Year.of(2017), EUR_20);
-        final Budget budget2 = budgetFactory.createBudget(categoryName, Year.of(2018), EUR_20);
+        final Budget budget1 = budgetFactory.createEvenlySpreadBudget(categoryName, Year.of(2017), EUR_20);
+        final Budget budget2 = budgetFactory.createEvenlySpreadBudget(categoryName, Year.of(2018), EUR_20);
         budgetRepository.storeBudget(budget1);
         budgetRepository.storeBudget(budget2);
 
@@ -114,8 +116,8 @@ class BudgetRepositoryTest {
     @Test
     void findMultipleExistingBudgetsByYear() {
         categoryRepository.storeCategory(new Category("cat2"));
-        final Budget budget1 = budgetFactory.createBudget(categoryName, Year.of(2018), EUR_20);
-        final Budget budget2 = budgetFactory.createBudget("cat2", Year.of(2018), EUR_20);
+        final Budget budget1 = budgetFactory.createEvenlySpreadBudget(categoryName, Year.of(2018), EUR_20);
+        final Budget budget2 = budgetFactory.createEvenlySpreadBudget("cat2", Year.of(2018), EUR_20);
         budgetRepository.storeBudget(budget1);
         budgetRepository.storeBudget(budget2);
 
@@ -132,7 +134,7 @@ class BudgetRepositoryTest {
     void storeAndFindBudgetByNameAndYear() {
         final String categoryName = "budgetCategory";
         final Year year = Year.of(2017);
-        final Budget budget = new Budget(categoryName, year, EUR_20);
+        final Budget budget = new Budget(categoryName, year, Collections.singletonMap(Month.JANUARY, EUR_20));
         final BudgetRepository budgetRepository = new BudgetRepository();
 
         budgetRepository.storeBudget(budget);

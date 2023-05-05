@@ -3,6 +3,7 @@ package nl.mvvenrooij.financial.presentation;
 import nl.mvvenrooij.financial.domain.*;
 import nl.mvvenrooij.financial.domain.categorizationrule.CategorizationRule;
 import nl.mvvenrooij.financial.domain.categorizationrule.CategorizationRuleRepository;
+import nl.mvvenrooij.financial.domainevents.EventBus;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
@@ -37,7 +38,8 @@ public class AdministrationOverview {
 
 
     public AdministrationOverview() {
-        new AmountUsedUpdater(budgetRepository);
+
+        new AmountUsedUpdater(budgetRepository, new EventBus<>());
         readCategories();
         createBudgets2022();
         readRules();
@@ -95,10 +97,10 @@ public class AdministrationOverview {
     }
 
     private void createBudgets2022() {
-        budgetRepository.storeBudget(budgetFactory.createBudget("Salary", Year.of(2022), Money.of(1000, EUR)));
-        budgetRepository.storeBudget(budgetFactory.createBudget("Rent", Year.of(2022), Money.of(-500, EUR)));
-        budgetRepository.storeBudget(budgetFactory.createBudget("Groceries", Year.of(2022), Money.of(-300, EUR)));
-        budgetRepository.storeBudget(budgetFactory.createBudget("Other", Year.of(2022), Money.of(0, EUR)));
+        budgetRepository.storeBudget(budgetFactory.createEvenlySpreadBudget("Salary", Year.of(2022), Money.of(1000, EUR)));
+        budgetRepository.storeBudget(budgetFactory.createEvenlySpreadBudget("Rent", Year.of(2022), Money.of(-500, EUR)));
+        budgetRepository.storeBudget(budgetFactory.createEvenlySpreadBudget("Groceries", Year.of(2022), Money.of(-300, EUR)));
+        budgetRepository.storeBudget(budgetFactory.createEvenlySpreadBudget("Other", Year.of(2022), Money.of(0, EUR)));
 
     }
 
