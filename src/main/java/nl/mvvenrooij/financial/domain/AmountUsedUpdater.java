@@ -28,7 +28,7 @@ public class AmountUsedUpdater implements EventListener<CategoryUpdated> {
         final Money amountUsed = category.totalInInterval(calculateFirstDayOfYear(budget.year()),
                 calculateLastDayOfYear(budget.year()));
         budget.updateAmountUsed(amountUsed);
-        budgetRepository.storeBudget(budget);
+        //budgetRepository.storeBudget(budget);
     }
 
     private LocalDate calculateLastDayOfYear(Year year) {
