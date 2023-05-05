@@ -18,6 +18,7 @@ public class EvenSpreadBudgetTest {
 
     public static final CurrencyUnit EUR = Monetary.getCurrency("EUR");
     private static Budget budget;
+    private static BudgetFactory factory;
 
     @BeforeAll
     public static void setUp() {
@@ -28,8 +29,9 @@ public class EvenSpreadBudgetTest {
 
         CategoryRepository categoryRepository = new CategoryRepository();
         Category someCat = new Category("mySpecialCategory");
+
         categoryRepository.storeCategory(someCat);
-        BudgetFactory factory = new BudgetFactory(categoryRepository);
+        factory = new BudgetFactory(categoryRepository);
 
         budget = factory.createEvenlySpreadBudget("mySpecialCategory", Year.of(2023), Money.of(1200, EUR));
         budgetRepository.storeBudget(budget);
@@ -58,5 +60,13 @@ public class EvenSpreadBudgetTest {
         final Money expectedAmountLeftInDecember = Money.of(1130, EUR);
 
         assertEquals(expectedAmountLeftInDecember, budget.amountLeftMonth(Month.DECEMBER));
+    }
+
+    @Test
+    public void handleEvenlySpreadIfAmountIsNotDividableBy12_exludingRoundingFactors() {
+        final Budget budget2 = factory.createEvenlySpreadBudget("mySpecialCategory", Year.of(2022), Money.of(0.01, EUR));
+        final Money expectedAmountLeftInDecember = Money.of(0.01, EUR);
+
+        assertEquals(expectedAmountLeftInDecember, budget2.amountLeftMonth(Month.DECEMBER));
     }
 }
