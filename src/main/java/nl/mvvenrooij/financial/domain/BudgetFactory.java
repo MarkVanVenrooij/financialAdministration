@@ -9,8 +9,10 @@ import javax.money.RoundingQueryBuilder;
 import java.math.RoundingMode;
 import java.time.Month;
 import java.time.Year;
+import java.time.YearMonth;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -42,6 +44,18 @@ public class BudgetFactory {
             throw new CategoryDoesNotExist();
         }
 
+    }
+
+    public Budget createOnceAYearBudget(final String categoryName, final YearMonth yearMonth, final Money amount) {
+        if (categoryRepository.findCategoryByName(categoryName).isPresent()) {
+
+            final Map<Month, Money> amountPlanned = new HashMap<>();
+            amountPlanned.put(yearMonth.getMonth(), amount);
+
+            return new Budget(categoryName, Year.of(yearMonth.getYear()), amountPlanned);
+        } else {
+            throw new CategoryDoesNotExist();
+        }
     }
 
     public Budget createBudgetForYearBasedOnOtherBudget(final String categoryName, Year budgetYear, Budget
