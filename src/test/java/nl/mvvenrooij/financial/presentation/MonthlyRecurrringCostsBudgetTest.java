@@ -3,7 +3,7 @@ package nl.mvvenrooij.financial.presentation;
 import nl.mvvenrooij.financial.domain.*;
 import nl.mvvenrooij.financial.domainevents.EventBus;
 import org.javamoney.moneta.Money;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import javax.money.CurrencyUnit;
@@ -14,14 +14,14 @@ import java.time.Year;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class EvenSpreadBudgetTest {
+public class MonthlyRecurrringCostsBudgetTest {
 
     public static final CurrencyUnit EUR = Monetary.getCurrency("EUR");
-    private static Budget budget;
-    private static BudgetFactory factory;
+    private Budget budget;
+    private BudgetFactory factory;
 
-    @BeforeAll
-    public static void setUp() {
+    @BeforeEach
+    public void setUp() {
         BudgetRepository budgetRepository = new BudgetRepository();
         EventBus<CategoryUpdated> eventBus = new EventBus<>();
         new AmountUsedUpdater(budgetRepository, eventBus);
@@ -40,33 +40,35 @@ public class EvenSpreadBudgetTest {
     }
 
     @Test
-    public void SeeIfSpendingIsOnTrackInJanuaryComparedToBudget_evenlyMonthlySpread() {
+    public void january() {
         final Money expectedAmountLeftInJanuary = Money.of(30, EUR);
 
-        assertEquals(expectedAmountLeftInJanuary, budget.amountLeftMonth(Month.JANUARY));
+        assertEquals(expectedAmountLeftInJanuary, budget.amountRemainingInMonth(Month.JANUARY));
     }
 
     @Test
-    public void SeeIfSpendingIsOnTrackInFebruaryComparedToBudget_evenlyMonthlySpread() {
+    public void february() {
 
         final Money expectedAmountLeftInFebruary = Money.of(130, EUR);
 
-        assertEquals(expectedAmountLeftInFebruary, budget.amountLeftMonth(Month.FEBRUARY));
+        assertEquals(expectedAmountLeftInFebruary, budget.amountRemainingInMonth(Month.FEBRUARY));
     }
 
     @Test
-    public void SeeIfSpendingIsOnTrackInDecemberComparedToBudget_evenlyMonthlySpread() {
+    public void december() {
 
         final Money expectedAmountLeftInDecember = Money.of(1130, EUR);
 
-        assertEquals(expectedAmountLeftInDecember, budget.amountLeftMonth(Month.DECEMBER));
+        assertEquals(expectedAmountLeftInDecember, budget.amountRemainingInMonth(Month.DECEMBER));
     }
 
     @Test
-    public void handleEvenlySpreadIfAmountIsNotDividableBy12_exludingRoundingFactors() {
+    public void handleRoundingIssues() {
         final Budget budget2 = factory.createEvenlySpreadBudget("mySpecialCategory", Year.of(2022), Money.of(0.01, EUR));
-        final Money expectedAmountLeftInDecember = Money.of(0.01, EUR);
+        final Money expectedNovember = Money.zero(EUR);
+        final Money expectedDecember = Money.of(0.01, EUR);
 
-        assertEquals(expectedAmountLeftInDecember, budget2.amountLeftMonth(Month.DECEMBER));
+        assertEquals(expectedNovember, budget2.amountRemainingInMonth(Month.NOVEMBER));
+        assertEquals(expectedDecember, budget2.amountRemainingInMonth(Month.DECEMBER));
     }
 }

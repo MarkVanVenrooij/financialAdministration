@@ -15,7 +15,7 @@ public class Budget {
     private final String categoryName;
     private final Year year;
 
-    private Map<Month, Money> amountPlanned;
+    private final Map<Month, Money> amountPlanned;
     private Map<Month, Money> amountUsed = new HashMap<>();
 
     Budget(final String categoryName, final Year year, final Map<Month, Money> amountPlanned) {
@@ -40,16 +40,12 @@ public class Budget {
         return amountUsed.values().stream().reduce(Money.zero(EUR), Money::add);
     }
 
-    public Money amountLeft() {
-        return amountPlanned().subtract(amountUsed());
-    }
-
     public void updateAmountUsed(final Map<Month, Money> amountUsed) {
         this.amountUsed = amountUsed;
     }
 
     public Money remaining() {
-        return amountLeft();
+        return amountPlanned().subtract(amountUsed());
     }
 
     @Override
@@ -77,11 +73,11 @@ public class Budget {
                 ", year=" + year +
                 ", amountPlanned=" + amountPlanned +
                 ", amountUsed=" + amountUsed +
-                ", amountLeft=" + amountLeft() +
+                ", amountLeft=" + amountPlanned().subtract(amountUsed()) +
                 "}\n";
     }
 
-    public Money amountLeftMonth(final Month month) {
+    public Money amountRemainingInMonth(final Month month) {
 
         Money amountPlannedTillMonth = this.amountPlanned.entrySet().stream()
                 .filter(monthlyBudget -> monthlyBudget.getKey().getValue() <= month.getValue())
