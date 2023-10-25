@@ -5,7 +5,7 @@ import java.util.List;
 
 public class CategorizationRuleRepository {
 
-    private ArrayList<CategorizationRule> categorizationRules = new ArrayList<>();
+    private final ArrayList<CategorizationRule> categorizationRules = new ArrayList<>();
 
     public List<CategorizationRule> categorizationRules() {
         return categorizationRules;

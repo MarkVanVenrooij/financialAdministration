@@ -1,7 +1,9 @@
 package nl.mvvenrooij.financial.domain;
 
 import java.time.Year;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class BudgetRepository {
@@ -33,32 +35,7 @@ public class BudgetRepository {
                 .collect(Collectors.toSet());
     }
 
-    private static class CategoryYear {
-        private final String category;
-        private final Year year;
-
-        public CategoryYear(String category, Year year) {
-            this.category = category;
-            this.year = year;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) {
-                return true;
-            }
-            if (o == null || getClass() != o.getClass()) {
-                return false;
-            }
-            CategoryYear that = (CategoryYear) o;
-            return Objects.equals(category, that.category) &&
-                    Objects.equals(year, that.year);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(category, year);
-        }
+    private record CategoryYear(String category, Year year) {
     }
 
 }
