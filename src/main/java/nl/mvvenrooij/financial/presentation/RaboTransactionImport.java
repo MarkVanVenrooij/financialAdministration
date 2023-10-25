@@ -22,10 +22,11 @@ public class RaboTransactionImport {
             "Oorspr munt", "Koers"};
 
     public RaboTransactionImport(final Reader in) throws IOException {
-        Iterable<CSVRecord> records = CSVFormat.DEFAULT
-                .withHeader(HEADERS)
-                .withFirstRecordAsHeader()
-                .parse(in);
+        CSVFormat csvFormat = CSVFormat.Builder.create()
+                .setHeader(HEADERS)
+                .setSkipHeaderRecord(true)
+                .build();
+        Iterable<CSVRecord> records = csvFormat.parse(in);
         for (CSVRecord record : records) {
             transactions.add(
                     new Transaction(

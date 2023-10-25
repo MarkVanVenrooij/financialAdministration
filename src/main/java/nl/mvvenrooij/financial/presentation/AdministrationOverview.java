@@ -115,8 +115,9 @@ public class AdministrationOverview {
         try {
             Writer out = Files.newBufferedWriter(Paths.get(file.getPath() + "/categories.csv"));
 
-            CSVPrinter csvPrinter = new CSVPrinter(out, CSVFormat.DEFAULT
-                    .withHeader("name"));
+            CSVFormat name =
+                    CSVFormat.Builder.create().setHeader("name").build();
+            CSVPrinter csvPrinter = new CSVPrinter(out, name);
             for (Category category : categoryRepository.categories()) {
                 csvPrinter.printRecord(category.name());
             }
@@ -132,9 +133,10 @@ public class AdministrationOverview {
         String file = Objects.requireNonNull(classLoader.getResource("nl/mvvenrooij/financial/import/categories.csv")).getFile();
         try {
             Reader in = new FileReader(file);
-            Iterable<CSVRecord> records = CSVFormat.DEFAULT
-                    .withHeader("name")
-                    .withFirstRecordAsHeader()
+            CSVFormat csvFormat = CSVFormat.Builder.create()
+                    .setHeader("name")
+                    .setSkipHeaderRecord(true).build();
+            Iterable<CSVRecord> records = csvFormat
                     .parse(in);
             for (CSVRecord record : records) {
                 categoryRepository.storeCategory(new Category(record.get("name")));
@@ -151,8 +153,9 @@ public class AdministrationOverview {
         try {
             Writer out = Files.newBufferedWriter(Paths.get(file.getPath() + "/rules.csv"));
 
-            CSVPrinter csvPrinter = new CSVPrinter(out, CSVFormat.DEFAULT
-                    .withHeader("type", "categoryName", "constructorValue"));
+            CSVFormat csvFormat = CSVFormat.Builder.create()
+                    .setHeader("type", "categoryName", "constructorValue").build();
+            CSVPrinter csvPrinter = new CSVPrinter(out, csvFormat);
             for (CategorizationRule rule : categorizationRuleRepository.categorizationRules()) {
                 csvPrinter.printRecord(rule.getClass().getName(), rule.category().name(), rule.constructorValue());
             }
@@ -168,9 +171,11 @@ public class AdministrationOverview {
         String file = Objects.requireNonNull(classLoader.getResource("nl/mvvenrooij/financial/import/rules.csv")).getFile();
         try {
             Reader in = new FileReader(file);
-            Iterable<CSVRecord> records = CSVFormat.DEFAULT
-                    .withHeader("type", "categoryName", "constructorValue")
-                    .withFirstRecordAsHeader()
+            CSVFormat csvFormat = CSVFormat.Builder.create()
+                    .setHeader("type", "categoryName", "constructorValue")
+                    .setSkipHeaderRecord(true)
+                    .build();
+            Iterable<CSVRecord> records = csvFormat
                     .parse(in);
             for (CSVRecord record : records) {
                 //some reflection
