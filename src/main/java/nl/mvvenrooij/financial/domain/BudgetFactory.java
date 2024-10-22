@@ -41,7 +41,7 @@ public class BudgetFactory {
 
             return new Budget(categoryName, year, amountPlanned);
         } else {
-            throw new CategoryDoesNotExist();
+            throw new CategoryDoesNotExist(categoryName);
         }
 
     }
@@ -54,7 +54,7 @@ public class BudgetFactory {
 
             return new Budget(categoryName, Year.of(yearMonth.getYear()), amountPlanned);
         } else {
-            throw new CategoryDoesNotExist();
+            throw new CategoryDoesNotExist(categoryName);
         }
     }
 
@@ -64,7 +64,7 @@ public class BudgetFactory {
         if (categoryRepository.findCategoryByName(categoryName).isPresent()) {
             return createEvenlySpreadBudget(categoryName, budgetYear, oldBudget.amountPlanned());
         } else {
-            throw new CategoryDoesNotExist();
+            throw new CategoryDoesNotExist(categoryName);
         }
     }
 
